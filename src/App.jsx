@@ -5,6 +5,7 @@ import {
   Category,
   DetailProduct,
   EditCategory,
+  EditProduct,
   HomePage,
   Product,
   Profile,
@@ -27,6 +28,7 @@ const App = () => {
           <Route path={"category"} element={<Category />} />
           <Route path={"category/:categoryId"} element={<EditCategory />} />
           <Route path={"product"} element={<Product />} />
+          <Route path={"product/:productId"} element={<EditProduct />} />
         </Route>
       </Routes>
     </BrowserRouter>

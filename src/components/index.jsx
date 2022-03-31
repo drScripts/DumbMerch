@@ -6,6 +6,7 @@ import ProfileItems from "./ProfileItems";
 import TransactionItem from "./TransactionItem";
 import CategoryTableItem from "./CategoryTableItem";
 import ProductTableItem from "./ProductTableItem";
+import InputFile from "./InputFile";
 
 export {
   Button,
@@ -16,4 +17,5 @@ export {
   TransactionItem,
   CategoryTableItem,
   ProductTableItem,
+  InputFile,
 };
