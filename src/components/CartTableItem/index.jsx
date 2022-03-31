@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import CurrencyFormat from "react-currency-format";
 import TrashIcon from "../../assets/trash-icon.png";
 
-const Index = ({ no = "#", id, product, qty = 1 }) => {
+const Index = ({ no = "#", id, product, qty = 1, onQtyChange }) => {
   const [show, setShow] = useState(false);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(qty);
   const [showImage, setShowImage] = useState(false);
 
   const handleClose = () => {
@@ -20,9 +20,11 @@ const Index = ({ no = "#", id, product, qty = 1 }) => {
     if (type === "DECREMENT") {
       if (quantity > 1) {
         setQuantity(quantity - 1);
+        onQtyChange(id, quantity - 1);
       }
     } else {
       setQuantity(quantity + 1);
+      onQtyChange(id, quantity + 1);
     }
   };
 
@@ -30,10 +32,6 @@ const Index = ({ no = "#", id, product, qty = 1 }) => {
     setShow(false);
     console.log(id);
   };
-
-  useEffect(() => {
-    setQuantity(qty);
-  }, [qty]);
 
   return (
     <tr className={`border-botom-light-grey`}>

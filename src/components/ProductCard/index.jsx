@@ -6,25 +6,25 @@ import { Link } from "react-router-dom";
 
 const ProductCard = ({ product = {} }) => {
   const {
-    productName = "",
-    productPrice = 0,
-    productStock = 0,
-    imageUrl = "",
+    name = "",
+    price = 0,
+    stock = 0,
+    fileLink = "",
     description = "",
     id,
   } = product;
 
   return (
     <Link
-      to={`/product/${id}?name=${productName}&price=${productPrice}&stock=${productStock}&url=${imageUrl}&description=${description}`}
+      to={`/product/${id}?name=${name}&price=${price}&stock=${stock}&url=${fileLink}&description=${description}`}
       style={{ textDecoration: "none" }}
     >
       <Card className="semi-dark-background product-card">
-        <Card.Img variant="top" src={imageUrl} className={"card-image"} />
+        <Card.Img variant="top" src={fileLink} className={"card-image"} />
         <Card.Body>
-          <Card.Title className="text-orange">{productName}</Card.Title>
-          <Card.Text>Rp. {productPrice}</Card.Text>
-          <Card.Text>Stock : {productStock}</Card.Text>
+          <Card.Title className="text-orange">{name}</Card.Title>
+          <Card.Text>Rp. {price}</Card.Text>
+          <Card.Text>Stock : {stock}</Card.Text>
         </Card.Body>
       </Card>
     </Link>
