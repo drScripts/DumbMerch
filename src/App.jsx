@@ -14,6 +14,7 @@ import {
   Product,
   Profile,
 } from "./pages";
+import { Adminmiddleware, AuthMiddleware } from "./middleware";
 
 const App = () => {
   return (
@@ -22,7 +23,7 @@ const App = () => {
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth loginPage={false} />} />
 
-        <Route path="/">
+        <Route path="/" element={<AuthMiddleware />}>
           <Route index element={<HomePage />} />
           <Route path={"product/:productId"} element={<DetailProduct />} />
           <Route path={"profile"} element={<Profile />} />
@@ -30,7 +31,7 @@ const App = () => {
           <Route path={"cart"} element={<Cart />} />
         </Route>
 
-        <Route path="/admin">
+        <Route path="/admin" element={<Adminmiddleware />}>
           <Route path={"category"} element={<Category />} />
           <Route path={"category/add"} element={<AddCategory />} />
           <Route path={"category/:categoryId"} element={<EditCategory />} />

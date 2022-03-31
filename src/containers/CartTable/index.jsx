@@ -64,6 +64,7 @@ const Index = () => {
             id={val.id}
             product={val.product}
             qty={val.qty}
+            key={val.id}
           />
         ))}
       </tbody>

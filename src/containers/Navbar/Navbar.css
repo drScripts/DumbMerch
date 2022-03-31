@@ -2,10 +2,12 @@ nav .container-fluid .navbar-nav a {
   text-decoration: none;
 }
 
-nav .container-fluid .navbar-nav a .nav-link {
+nav .container-fluid .navbar-nav a .nav-link,
+nav .container-fluid .navbar-nav .nav-link {
   color: white;
   font-size: 18px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 nav .container-fluid .navbar-nav a .nav-link.active {

@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Form as BootstrapForm } from "react-bootstrap";
 import { Button, Card, Form } from "../../components";
+import { useNavigate } from "react-router-dom";
 
 const Index = ({ isLogin = false }) => {
+  const navigate = useNavigate();
+
   const [state, setState] = useState({
     name: "",
     password: "",
@@ -19,7 +22,19 @@ const Index = ({ isLogin = false }) => {
   const onSubmits = (e) => {
     e.preventDefault();
 
-    console.log(state);
+    const isAdmin = state.email.search("admin") !== -1;
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        name: "Nathanael V D",
+        email: state.email,
+        password: state.password,
+        role: isAdmin ? "admin" : "user",
+      })
+    );
+
+    navigate("/");
   };
   return (
     <BootstrapForm onSubmit={onSubmits}>
