@@ -1,7 +1,9 @@
 import styles from "./ChatField.module.css";
 import React from "react";
+import PropType, { defaultVal } from "../../propTypes/ChatField";
 
-const ChatField = ({ isUser = false, message = "" }) => {
+const ChatField = (props) => {
+  const { isUser, message } = props;
   if (isUser) {
     return (
       <div className="d-flex align-items-center justify-content-end gap-3 mb-3">
@@ -30,5 +32,8 @@ const ChatField = ({ isUser = false, message = "" }) => {
     );
   }
 };
+
+ChatField.propTypes = PropType;
+ChatField.defaultProps = defaultVal;
 
 export default ChatField;

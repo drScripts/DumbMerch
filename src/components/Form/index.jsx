@@ -1,13 +1,9 @@
 import "./Form.css";
+import PropType, { defaultVal } from "../../propTypes/FormType";
 
-const Form = ({
-  type = "text",
-  placeHolder = "",
-  name = "",
-  onChange,
-  value,
-  className,
-}) => {
+const Form = (props) => {
+  const { type, placeHolder, name, onChange, value, className } = props;
+
   const onChangeForm = (e) => {
     onChange({ [e.target.name]: e.target.value });
   };
@@ -23,5 +19,8 @@ const Form = ({
     />
   );
 };
+
+Form.propTypes = PropType;
+Form.defaultProps = defaultVal;
 
 export default Form;

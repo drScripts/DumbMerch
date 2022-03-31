@@ -1,13 +1,9 @@
 import "./Button.css";
+import { defaultVal, type } from "../../propTypes/ButtonType";
 
-const Button = ({
-  title = "",
-  bgColor = "bg-none",
-  fontColor = "c-white",
-  width = "",
-  className,
-  onClick,
-}) => {
+const Button = (props) => {
+  const { title, bgColor, fontColor, width, className, onClick } = props;
+
   const classButton = `classButton ${bgColor} ${fontColor} ${className} ${width}`;
   return (
     <button className={classButton} onClick={onClick}>
@@ -15,5 +11,8 @@ const Button = ({
     </button>
   );
 };
+
+Button.defaultProps = defaultVal;
+Button.propTypes = type;
 
 export default Button;

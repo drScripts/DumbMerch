@@ -1,8 +1,9 @@
 import "./ChatBox.css";
-
+import PropType from "../../propTypes/ChatBox";
 import React from "react";
 
-const ChatBox = ({ name, chat, onClick, profilePict }) => {
+const ChatBox = (props) => {
+  const { name, chat, onClick, profilePict } = props;
   return (
     <div className="d-flex align-items-center" onClick={onClick}>
       <img
@@ -19,5 +20,7 @@ const ChatBox = ({ name, chat, onClick, profilePict }) => {
     </div>
   );
 };
+
+ChatBox.propTypes = PropType;
 
 export default ChatBox;

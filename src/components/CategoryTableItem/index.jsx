@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-
+import PropType from "../../propTypes/CategoryTableItem";
 import { Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const Index = ({ no = 0, name, id }) => {
+const CategoryTableItem = (props) => {
+  const { no, name, id } = props;
+
   const [show, setShow] = useState(false);
 
   const handleDelete = () => {
@@ -59,5 +61,6 @@ const Index = ({ no = 0, name, id }) => {
     </tr>
   );
 };
+CategoryTableItem.propTypes = PropType;
 
-export default Index;
+export default CategoryTableItem;

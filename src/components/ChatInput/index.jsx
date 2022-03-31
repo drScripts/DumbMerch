@@ -1,9 +1,10 @@
 import "./ChatInput.css";
-
+import PropType, { defaultVal } from "../../propTypes/ChatInput";
 import React from "react";
 import { InputGroup, FormControl } from "react-bootstrap";
 
-const ChatInput = ({ onSend, onTextChange, value, className }) => {
+const ChatInput = (props) => {
+  const { onSend, onTextChange, value, className } = props;
   const onChange = (e) => {
     onTextChange(e.target.value);
   };
@@ -39,5 +40,8 @@ const ChatInput = ({ onSend, onTextChange, value, className }) => {
     </InputGroup>
   );
 };
+
+ChatInput.propTypes = PropType;
+ChatInput.defaultProps = defaultVal;
 
 export default ChatInput;

@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import CurrencyFormat from "react-currency-format";
 import TrashIcon from "../../assets/trash-icon.png";
+import PropType from "../../propTypes/CartTableItem";
 
-const Index = ({ no = "#", id, product, qty = 1, onQtyChange }) => {
+const CartTableItem = (props) => {
+  const { no, id, product, qty, onQtyChange } = props;
+
   const [show, setShow] = useState(false);
   const [quantity, setQuantity] = useState(qty);
   const [showImage, setShowImage] = useState(false);
@@ -123,4 +126,6 @@ const Index = ({ no = "#", id, product, qty = 1, onQtyChange }) => {
   );
 };
 
-export default Index;
+CartTableItem.propTypes = PropType;
+
+export default CartTableItem;
