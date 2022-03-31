@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   Auth,
   Category,
+  Complain,
   DetailProduct,
   EditCategory,
   EditProduct,
@@ -22,6 +23,7 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route path={"product/:productId"} element={<DetailProduct />} />
           <Route path={"profile"} element={<Profile />} />
+          <Route path={"complain"} element={<Complain />} />
         </Route>
 
         <Route path="/admin">
@@ -29,6 +31,7 @@ const App = () => {
           <Route path={"category/:categoryId"} element={<EditCategory />} />
           <Route path={"product"} element={<Product />} />
           <Route path={"product/:productId"} element={<EditProduct />} />
+          <Route path={"complain"} element={<Complain isAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>

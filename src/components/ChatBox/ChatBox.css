@@ -1,0 +1,17 @@
+.profile-img {
+  border-radius: 100%;
+}
+
+.chat-name {
+  margin-bottom: 0;
+}
+
+.chat {
+  color: #ababab;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

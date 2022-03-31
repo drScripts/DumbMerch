@@ -7,6 +7,9 @@ import TransactionItem from "./TransactionItem";
 import CategoryTableItem from "./CategoryTableItem";
 import ProductTableItem from "./ProductTableItem";
 import InputFile from "./InputFile";
+import ChatInput from "./ChatInput";
+import ChatField from "./ChatField";
+import ChatBox from "./ChatBox";
 
 export {
   Button,
@@ -18,4 +21,7 @@ export {
   CategoryTableItem,
   ProductTableItem,
   InputFile,
+  ChatInput,
+  ChatField,
+  ChatBox,
 };

@@ -1,0 +1,24 @@
+.chatFields {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  max-height: 72vh;
+}
+
+.chatFields::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chatFields::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.chatSpacer {
+  flex: 1;
+}
+
+.messages {
+  flex: 0;
+}

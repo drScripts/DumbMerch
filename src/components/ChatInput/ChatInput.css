@@ -1,0 +1,23 @@
+.send-button {
+  border: none;
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+.input-fill {
+  background-color: #ababab26;
+}
+
+.border-none {
+  border: none;
+}
+
+.input,
+.input:focus {
+  color: white;
+  background-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
