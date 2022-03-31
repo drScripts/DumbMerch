@@ -5,6 +5,7 @@ import ProductCard from "./ProductCard";
 import ProfileItems from "./ProfileItems";
 import TransactionItem from "./TransactionItem";
 import CategoryTableItem from "./CategoryTableItem";
+import ProductTableItem from "./ProductTableItem";
 
 export {
   Button,
@@ -14,4 +15,5 @@ export {
   ProfileItems,
   TransactionItem,
   CategoryTableItem,
+  ProductTableItem,
 };
