@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   Auth,
+  Cart,
   Category,
   Complain,
   DetailProduct,
@@ -24,6 +25,7 @@ const App = () => {
           <Route path={"product/:productId"} element={<DetailProduct />} />
           <Route path={"profile"} element={<Profile />} />
           <Route path={"complain"} element={<Complain />} />
+          <Route path={"cart"} element={<Cart />} />
         </Route>
 
         <Route path="/admin">

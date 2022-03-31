@@ -7,6 +7,7 @@ import EditCategory from "./EditCategory";
 import Product from "./Product";
 import EditProduct from "./EditProduct";
 import Complain from "./Complain";
+import Cart from "./Cart";
 
 export {
   Auth,
@@ -18,4 +19,5 @@ export {
   Product,
   EditProduct,
   Complain,
+  Cart,
 };
