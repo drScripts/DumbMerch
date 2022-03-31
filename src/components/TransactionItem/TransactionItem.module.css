@@ -1,0 +1,7 @@
+.productImage {
+  width: 100px;
+}
+
+.cardTransaction:hover {
+  cursor: pointer;
+}
