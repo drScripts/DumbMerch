@@ -3,6 +3,7 @@ import Logo from "../../assets/dumb-merch-logo.png";
 import { Button } from "../../components";
 import { Col, Row } from "react-bootstrap";
 import { AuthForm } from "../../containers";
+import { Link } from "react-router-dom";
 
 const Auth = ({ loginPage = true }) => {
   return (
@@ -22,8 +23,12 @@ const Auth = ({ loginPage = true }) => {
               Go shopping for merchandise, just go to dumb merch shopping. the
               biggest merchandise in <b>Indonesia</b>
             </p>
-            <Button title="Login" bgColor="bg-red" />
-            <Button title="Register" fontColor="c-grey" className={"ms-3"} />
+            <Link to={"/login"}>
+              <Button title="Login" bgColor="bg-red" />
+            </Link>
+            <Link to={"/register"}>
+              <Button title="Register" fontColor="c-grey" className={"ms-3"} />
+            </Link>
           </Col>
           <Col className="align-self-center mt-md-0 mt-3">
             <AuthForm isLogin={loginPage} />

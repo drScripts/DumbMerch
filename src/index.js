@@ -2,12 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/global.css";
-import { Auth } from "./pages";
+import Router from "./App";
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Auth loginPage={true} />
+    <Router />
   </React.StrictMode>,
   document.getElementById("root")
 );
