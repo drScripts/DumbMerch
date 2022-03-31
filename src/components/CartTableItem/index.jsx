@@ -30,6 +30,7 @@ const Index = ({ no = "#", id, product, qty = 1, onQtyChange }) => {
 
   const handleDelete = () => {
     setShow(false);
+
     console.log(id);
   };
 

@@ -7,7 +7,7 @@ const Index = () => {
   const [carts, setCarts] = useState([]);
   const [total, setTotal] = useState(0);
 
-  const countTotal = () => {
+  const countTotal = (carts) => {
     let totalNow = 0;
     carts.forEach((val, i) => {
       totalNow += val.product.price * val.qty;
@@ -27,16 +27,20 @@ const Index = () => {
     });
     localStorage.setItem("cart", JSON.stringify(newCart));
     getCarts();
+    countTotal();
   };
 
   const getCarts = () => {
     setCarts(JSON.parse(localStorage.getItem("cart")));
-    countTotal();
   };
 
   useEffect(() => {
+    countTotal(carts);
+  }, [carts]);
+
+  useEffect(() => {
     getCarts();
-  });
+  }, []);
 
   return (
     <Table responsive striped hover variant="dark" className="mt-3">

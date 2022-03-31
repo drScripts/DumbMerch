@@ -28,7 +28,30 @@ const Index = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(state);
+
+    const { name, price, stock, file, description } = state;
+
+    if (name && price && stock && file && description) {
+      const products = JSON.parse(localStorage.getItem("products"));
+
+      const reader = new FileReader();
+
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        const fileLink = reader.result;
+        const newProduct = {
+          name,
+          price,
+          stock,
+          fileName: file.name,
+          description,
+          fileLink,
+        };
+        products.push(newProduct);
+        localStorage.setItem("products", JSON.stringify(products));
+      };
+    }
   };
 
   return (
