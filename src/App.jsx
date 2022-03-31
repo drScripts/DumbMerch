@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Auth, HomePage } from "./pages";
+import { Auth, DetailProduct, HomePage } from "./pages";
 
 const App = () => {
   return (
@@ -11,6 +11,7 @@ const App = () => {
 
         <Route path="/">
           <Route index element={<HomePage />} />
+          <Route path={"product/:productId"} element={<DetailProduct />} />
         </Route>
       </Routes>
     </BrowserRouter>
