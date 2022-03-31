@@ -1,0 +1,29 @@
+.classButton {
+  width: 135px;
+  padding: 10px;
+  box-shadow: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.classButton.bg-red {
+  background-color: #f74d4d;
+}
+
+.classButton.bg-none {
+  background-color: transparent;
+}
+
+.classButton.c-white {
+  color: white;
+}
+
+.classButton.c-grey {
+  color: #b7b7b7;
+}
+
+.classButton.w-100 {
+  width: 100%;
+}
