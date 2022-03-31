@@ -1,6 +1,13 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Auth, DetailProduct, HomePage, Profile } from "./pages";
+import {
+  Auth,
+  Category,
+  DetailProduct,
+  EditCategory,
+  HomePage,
+  Profile,
+} from "./pages";
 
 const App = () => {
   return (
@@ -13,6 +20,11 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route path={"product/:productId"} element={<DetailProduct />} />
           <Route path={"profile"} element={<Profile />} />
+        </Route>
+
+        <Route path="/admin">
+          <Route path={"category"} element={<Category />} />
+          <Route path={"category/:categoryId"} element={<EditCategory />} />
         </Route>
       </Routes>
     </BrowserRouter>

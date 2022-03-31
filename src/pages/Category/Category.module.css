@@ -1,0 +1,12 @@
+.buttontable {
+  width: 100px;
+  font-weight: bold;
+}
+
+.borderBotomlightGrey {
+  border-bottom: 1px solid #c4c4c4;
+}
+
+.borderBotomlightGrey td {
+  vertical-align: middle;
+}
