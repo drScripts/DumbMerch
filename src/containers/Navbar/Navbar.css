@@ -1,0 +1,18 @@
+nav .container-fluid .navbar-nav a {
+  text-decoration: none;
+}
+
+nav .container-fluid .navbar-nav a .nav-link {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+nav .container-fluid .navbar-nav a .nav-link.active {
+  color: #f74d4d;
+}
+
+.badge {
+  left: -13px;
+  top: -10px;
+}

@@ -1,3 +1,4 @@
 import AuthForm from "./AuthForm";
+import Navbar from "./Navbar";
 
-export { AuthForm };
+export { AuthForm, Navbar };

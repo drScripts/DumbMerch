@@ -1,0 +1,12 @@
+.semi-dark-background {
+  background-color: #212121;
+  color: white;
+}
+
+/* .product-card {
+  width: 241px;
+} */
+
+.card-image {
+  height: 260px;
+}
