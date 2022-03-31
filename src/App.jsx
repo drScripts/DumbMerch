@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
+  AddCategory,
+  AddProduct,
   Auth,
   Cart,
   Category,
@@ -30,8 +32,10 @@ const App = () => {
 
         <Route path="/admin">
           <Route path={"category"} element={<Category />} />
+          <Route path={"category/add"} element={<AddCategory />} />
           <Route path={"category/:categoryId"} element={<EditCategory />} />
           <Route path={"product"} element={<Product />} />
+          <Route path={"product/add"} element={<AddProduct />} />
           <Route path={"product/:productId"} element={<EditProduct />} />
           <Route path={"complain"} element={<Complain isAdmin />} />
         </Route>

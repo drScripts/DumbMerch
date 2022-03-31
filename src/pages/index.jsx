@@ -8,6 +8,8 @@ import Product from "./Product";
 import EditProduct from "./EditProduct";
 import Complain from "./Complain";
 import Cart from "./Cart";
+import AddCategory from "./AddCategory";
+import AddProduct from "./AddProduct";
 
 export {
   Auth,
@@ -20,4 +22,6 @@ export {
   EditProduct,
   Complain,
   Cart,
+  AddCategory,
+  AddProduct,
 };
