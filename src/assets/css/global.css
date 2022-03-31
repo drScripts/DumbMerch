@@ -15,6 +15,10 @@ body::-webkit-scrollbar-thumb {
   color: #f74d4d;
 }
 
+.bg-orange {
+  background-color: #f74d4d;
+}
+
 .circle {
   border-radius: 50%;
 }

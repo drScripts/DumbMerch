@@ -17,4 +17,5 @@ nav .container-fluid .navbar-nav a .nav-link.active {
 .badge {
   left: -13px;
   top: -10px;
+  background-color: #f74d4d;
 }

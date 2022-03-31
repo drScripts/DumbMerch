@@ -93,7 +93,7 @@ const Navbar = () => {
             <Link to={"/cart"} className={"ms-md-4"}>
               <div className={`nav-link`}>
                 <img src={CartIcon} width={35} height={35} alt={"cart icon"} />
-                <Badge pill bg="info" className={"position-relative"}>
+                <Badge bg="" pill className={"position-relative"}>
                   0
                 </Badge>
               </div>
