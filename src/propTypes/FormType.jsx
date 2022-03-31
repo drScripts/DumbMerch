@@ -8,6 +8,8 @@ const type = {
     "color",
     "date",
     "datetime",
+    "password",
+    "email",
   ]),
   placeHolder: PropTypes.string,
   name: PropTypes.string,
