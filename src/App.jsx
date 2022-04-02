@@ -15,6 +15,7 @@ import {
   Profile,
 } from "./pages";
 import { Adminmiddleware, AuthMiddleware } from "./middleware";
+import MainMiddleware from "./middleware/MainMiddleware";
 
 const mockProducts = [
   {
@@ -256,9 +257,10 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Auth />} />
-        <Route path="/register" element={<Auth loginPage={false} />} />
-
+        <Route path="/" element={<MainMiddleware />}>
+          <Route path="login" element={<Auth />} />
+          <Route path="register" element={<Auth loginPage={false} />} />
+        </Route>
         <Route path="/" element={<AuthMiddleware />}>
           <Route index element={<HomePage />} />
           <Route path={"product/:productId"} element={<DetailProduct />} />
@@ -268,6 +270,7 @@ const App = () => {
         </Route>
 
         <Route path="/admin" element={<Adminmiddleware />}>
+          <Route index element={<Category />} />
           <Route path={"category"} element={<Category />} />
           <Route path={"category/add"} element={<AddCategory />} />
           <Route path={"category/:categoryId"} element={<EditCategory />} />

@@ -38,13 +38,15 @@ const Navbar = () => {
         <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
         <BootstrapNavbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Link to={"/"}>
-              <div
-                className={`nav-link ${currentPath === "/" ? "active" : ""}`}
-              >
-                Home
-              </div>
-            </Link>
+            {role === "user" && (
+              <Link to={"/"}>
+                <div
+                  className={`nav-link ${currentPath === "/" ? "active" : ""}`}
+                >
+                  Home
+                </div>
+              </Link>
+            )}
             <Link to={`${role === "admin" ? "/admin/complain" : "/complain"}`}>
               <div
                 className={`nav-link ${
@@ -54,15 +56,17 @@ const Navbar = () => {
                 Complain
               </div>
             </Link>
-            <Link to={"/profile"}>
-              <div
-                className={`nav-link ${
-                  currentPath === "/profile" ? "active" : ""
-                }`}
-              >
-                Profile
-              </div>
-            </Link>
+            {role === "user" && (
+              <Link to={"/profile"}>
+                <div
+                  className={`nav-link ${
+                    currentPath === "/profile" ? "active" : ""
+                  }`}
+                >
+                  Profile
+                </div>
+              </Link>
+            )}
             {role === "admin" && (
               <>
                 <Link to={"/admin/category"}>
@@ -90,14 +94,21 @@ const Navbar = () => {
               Logout
             </div>
 
-            <Link to={"/cart"} className={"ms-md-4"}>
-              <div className={`nav-link`}>
-                <img src={CartIcon} width={35} height={35} alt={"cart icon"} />
-                <Badge bg="" pill className={"position-relative"}>
-                  0
-                </Badge>
-              </div>
-            </Link>
+            {role === "user" && (
+              <Link to={"/cart"} className={"ms-md-4"}>
+                <div className={`nav-link`}>
+                  <img
+                    src={CartIcon}
+                    width={35}
+                    height={35}
+                    alt={"cart icon"}
+                  />
+                  <Badge bg="" pill className={"position-relative"}>
+                    0
+                  </Badge>
+                </div>
+              </Link>
+            )}
           </Nav>
         </BootstrapNavbar.Collapse>
       </Container>
