@@ -11,6 +11,7 @@ import ChatInput from "./ChatInput";
 import ChatField from "./ChatField";
 import ChatBox from "./ChatBox";
 import CartTableItem from "./CartTableItem";
+import SingleTransactionItem from "./SingleTransactionItem";
 
 export {
   Button,
@@ -26,4 +27,5 @@ export {
   ChatField,
   ChatBox,
   CartTableItem,
+  SingleTransactionItem,
 };

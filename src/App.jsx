@@ -13,6 +13,7 @@ import {
   HomePage,
   Product,
   Profile,
+  DetailTransaction,
 } from "./pages";
 import { Adminmiddleware, AuthMiddleware } from "./middleware";
 import MainMiddleware from "./middleware/MainMiddleware";
@@ -159,7 +160,7 @@ const mockTransaction = [
     total: 5000000 + 7000000,
   },
   {
-    id: 1,
+    id: 3,
     products: [
       {
         fileName: "Mouse.jpg",
@@ -197,7 +198,7 @@ const mockTransaction = [
     total: 5000000 + 7000000 + 5000000,
   },
   {
-    id: 1,
+    id: 4,
     products: [
       {
         fileName: "Mouse.jpg",
@@ -267,6 +268,10 @@ const App = () => {
           <Route path={"profile"} element={<Profile />} />
           <Route path={"complain"} element={<Complain />} />
           <Route path={"cart"} element={<Cart />} />
+          <Route
+            path={"transaction/:transactionId"}
+            element={<DetailTransaction />}
+          />
         </Route>
 
         <Route path="/admin" element={<Adminmiddleware />}>

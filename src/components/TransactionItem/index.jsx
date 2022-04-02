@@ -3,6 +3,7 @@ import Logo from "../../assets/dumb-merch-logo.png";
 import styles from "./TransactionItem.module.css";
 import { Row, Col } from "react-bootstrap";
 import CurrencyFormat from "react-currency-format";
+import { Link } from "react-router-dom";
 
 const Index = ({ transaction }) => {
   const generateProductImg = (products) => {
@@ -59,34 +60,39 @@ const Index = ({ transaction }) => {
   );
 
   return (
-    <div
-      className={`d-flex align-items-center justify-content-between bg-semi-dark-grey px-4 py-3 mb-3 ${styles.cardTransaction}`}
+    <Link
+      to={`/transaction/${transaction.id}`}
+      className={"text-decoration-none"}
     >
-      <div className="d-flex gap-4 align-items-center">
-        {generateProductImg(productImage)}
-        <div className="d-flex flex-column justify-content-between ">
-          <div>
-            <h3 className="text-orange mb-0 ellipsis max-line-1">
-              {productName}
-            </h3>
-            <p className={`text-orange mb-4`}>Saturday, 14 Juli 2021</p>
-          </div>
+      <div
+        className={`d-flex align-items-center justify-content-between bg-semi-dark-grey px-4 py-3 mb-3 ${styles.cardTransaction}`}
+      >
+        <div className="d-flex gap-4 align-items-center">
+          {generateProductImg(productImage)}
+          <div className="d-flex flex-column justify-content-between ">
+            <div>
+              <h3 className="text-orange mb-0 ellipsis max-line-1">
+                {productName}
+              </h3>
+              <p className={`text-orange mb-4`}>Saturday, 14 Juli 2021</p>
+            </div>
 
-          <div>
-            <p className={`text-light text-bold mb-0`}>
-              <b>Sub Total</b> :{" "}
-              <CurrencyFormat
-                value={transaction.total}
-                prefix={"Rp."}
-                displayType="text"
-                thousandSeparator={true}
-              />
-            </p>
+            <div>
+              <p className={`text-light text-bold mb-0`}>
+                <b>Sub Total</b> :{" "}
+                <CurrencyFormat
+                  value={transaction.total}
+                  prefix={"Rp."}
+                  displayType="text"
+                  thousandSeparator={true}
+                />
+              </p>
+            </div>
           </div>
         </div>
+        <img alt="Logo" src={Logo} width={70} height={68} />
       </div>
-      <img alt="Logo" src={Logo} width={70} height={68} />
-    </div>
+    </Link>
   );
 };
 

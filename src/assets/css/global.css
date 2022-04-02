@@ -86,3 +86,7 @@ body::-webkit-scrollbar-thumb {
   -webkit-line-clamp: 3; /* number of lines to show */
   line-clamp: 3;
 }
+
+.text-justify {
+  text-align: justify;
+}

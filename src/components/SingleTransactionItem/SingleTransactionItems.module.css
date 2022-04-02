@@ -1,0 +1,14 @@
+.productImage {
+  width: 100px;
+  height: 100px;
+}
+
+.transactionImageField {
+  width: 100px;
+  height: 100px;
+}
+
+.columns {
+  padding: 0;
+  margin: 0;
+}

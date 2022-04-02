@@ -10,6 +10,7 @@ import Complain from "./Complain";
 import Cart from "./Cart";
 import AddCategory from "./AddCategory";
 import AddProduct from "./AddProduct";
+import DetailTransaction from "./DetailTransaction";
 
 export {
   Auth,
@@ -24,4 +25,5 @@ export {
   Cart,
   AddCategory,
   AddProduct,
+  DetailTransaction,
 };
