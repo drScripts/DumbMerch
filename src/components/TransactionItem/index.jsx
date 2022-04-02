@@ -4,7 +4,7 @@ import styles from "./TransactionItem.module.css";
 import { Row, Col } from "react-bootstrap";
 import CurrencyFormat from "react-currency-format";
 
-const Index = ({ transactions }) => {
+const Index = ({ transaction }) => {
   const generateProductImg = (products) => {
     let colWidth = products.length >= 2 ? 6 : 12;
 
@@ -35,7 +35,7 @@ const Index = ({ transactions }) => {
               return (
                 <Col md={columnSize} className={`${styles.columns}`} key={i}>
                   <img
-                    src="https://images.unsplash.com/photo-1560762484-813fc97650a0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
+                    src={val}
                     alt=""
                     className={`${styles.productImage} ${height}`}
                   />
@@ -43,22 +43,32 @@ const Index = ({ transactions }) => {
               );
             }
           } else {
-            return <></>;
+            return null;
           }
         })}
       </Row>
     );
   };
 
+  const productName = transaction.products
+    .map((product, index) => product.name)
+    .join(", ");
+
+  const productImage = transaction.products.map(
+    (product, index) => product.fileLink
+  );
+
   return (
     <div
       className={`d-flex align-items-center justify-content-between bg-semi-dark-grey px-4 py-3 mb-3 ${styles.cardTransaction}`}
     >
       <div className="d-flex gap-4 align-items-center">
-        {generateProductImg(["halo", 2, 3, 4, 5])}
+        {generateProductImg(productImage)}
         <div className="d-flex flex-column justify-content-between ">
           <div>
-            <h3 className="text-orange mb-0">Mouse</h3>
+            <h3 className="text-orange mb-0 ellipsis max-line-1">
+              {productName}
+            </h3>
             <p className={`text-orange mb-4`}>Saturday, 14 Juli 2021</p>
           </div>
 
@@ -66,7 +76,7 @@ const Index = ({ transactions }) => {
             <p className={`text-light text-bold mb-0`}>
               <b>Sub Total</b> :{" "}
               <CurrencyFormat
-                value={500000}
+                value={transaction.total}
                 prefix={"Rp."}
                 displayType="text"
                 thousandSeparator={true}
@@ -75,7 +85,7 @@ const Index = ({ transactions }) => {
           </div>
         </div>
       </div>
-      <img alt="" src={Logo} width={70} height={68} />
+      <img alt="Logo" src={Logo} width={70} height={68} />
     </div>
   );
 };

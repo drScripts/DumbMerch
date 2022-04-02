@@ -1,11 +1,17 @@
 import styles from "./Profile.module.css";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Navbar } from "../../containers";
 import { ProfileItems, TransactionItem } from "../../components";
 
 const Profile = () => {
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    setTransactions(JSON.parse(localStorage.getItem("transactions")));
+  }, []);
+
   return (
     <section>
       <Navbar />
@@ -38,10 +44,9 @@ const Profile = () => {
           <Col md={6}>
             <h1 className="text-orange mb-3">My Transactions</h1>
             <div className={`${styles.transactionFields}`}>
-              <TransactionItem />
-              <TransactionItem />
-              <TransactionItem />
-              <TransactionItem />
+              {transactions.map((transaction, index) => (
+                <TransactionItem transaction={transaction} key={index} />
+              ))}
             </div>
           </Col>
         </Row>

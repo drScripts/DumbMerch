@@ -23,7 +23,9 @@ const ProductCard = ({ product = {} }) => {
       <Card className="semi-dark-background product-card">
         <Card.Img variant="top" src={fileLink} className={"card-image"} />
         <Card.Body>
-          <Card.Title className="text-orange">{name}</Card.Title>
+          <Card.Title className="text-orange ellipsis max-line-2">
+            {name}
+          </Card.Title>
           <Card.Text>
             <CurrencyFormat
               value={price}
