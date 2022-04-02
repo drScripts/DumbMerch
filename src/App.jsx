@@ -111,10 +111,146 @@ const cartMock = [
   },
 ];
 
+const mockTransaction = [
+  {
+    id: 1,
+    products: [
+      {
+        fileName: "Mouse.jpg",
+        fileLink:
+          "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/l/2/l20m01.jpg",
+        name: "Mouse",
+        description: "lorem ipsum mouse ...",
+        price: 500000,
+        stock: 600,
+        id: 1,
+        qty: 10,
+      },
+    ],
+    total: 5000000,
+  },
+  {
+    id: 2,
+    products: [
+      {
+        fileName: "Mouse.jpg",
+        fileLink:
+          "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/l/2/l20m01.jpg",
+        name: "Mouse",
+        description: "lorem ipsum mouse ...",
+        price: 500000,
+        stock: 600,
+        id: 1,
+        qty: 10,
+      },
+      {
+        fileName: "Keyboard.jpg",
+        fileLink:
+          "https://jete.id/wp-content/uploads/2021/09/03.-keyboard-gaming-keyboad-komputer-762x400.jpg",
+        name: "Keyboard",
+        description: "lorem ipsum keyboard ...",
+        price: 700000,
+        stock: 600,
+        id: 2,
+        qty: 10,
+      },
+    ],
+    total: 5000000 + 7000000,
+  },
+  {
+    id: 1,
+    products: [
+      {
+        fileName: "Mouse.jpg",
+        fileLink:
+          "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/l/2/l20m01.jpg",
+        name: "Mouse",
+        description: "lorem ipsum mouse ...",
+        price: 500000,
+        stock: 600,
+        id: 1,
+        qty: 10,
+      },
+      {
+        fileName: "Keyboard.jpg",
+        fileLink:
+          "https://jete.id/wp-content/uploads/2021/09/03.-keyboard-gaming-keyboad-komputer-762x400.jpg",
+        name: "Keyboard",
+        description: "lorem ipsum keyboard ...",
+        price: 700000,
+        stock: 600,
+        id: 2,
+        qty: 10,
+      },
+      {
+        fileName: "Bag.jpg",
+        fileLink: "https://rohan.imgix.net/product/04910565.jpg",
+        name: "Bag",
+        description: "lorem ipsum bag ...",
+        price: 500000,
+        stock: 600,
+        id: 3,
+        qty: 10,
+      },
+    ],
+    total: 5000000 + 7000000 + 5000000,
+  },
+  {
+    id: 1,
+    products: [
+      {
+        fileName: "Mouse.jpg",
+        fileLink:
+          "https://thermaltake.azureedge.net/pub/media/catalog/product/cache/6bf0ed99c663954fafc930039201ed07/l/2/l20m01.jpg",
+        name: "Mouse",
+        description: "lorem ipsum mouse ...",
+        price: 500000,
+        stock: 600,
+        id: 1,
+        qty: 10,
+      },
+      {
+        fileName: "Keyboard.jpg",
+        fileLink:
+          "https://jete.id/wp-content/uploads/2021/09/03.-keyboard-gaming-keyboad-komputer-762x400.jpg",
+        name: "Keyboard",
+        description: "lorem ipsum keyboard ...",
+        price: 700000,
+        stock: 600,
+        id: 2,
+        qty: 10,
+      },
+      {
+        fileName: "Bag.jpg",
+        fileLink: "https://rohan.imgix.net/product/04910565.jpg",
+        name: "Bag",
+        description: "lorem ipsum bag ...",
+        price: 500000,
+        stock: 600,
+        id: 3,
+        qty: 10,
+      },
+      {
+        fileName: "Stationary.jpg",
+        fileLink:
+          "https://5.imimg.com/data5/NN/SE/OX/SELLER-11524350/mahadev-gift-and-stationary-vadgoan-belgaum-belgaum-wnsxb-500x500.jpg",
+        name: "Stationary",
+        description: "lorem ipsum stationary ...",
+        price: 25000,
+        stock: 600,
+        id: 4,
+        qty: 10,
+      },
+    ],
+    total: 5000000 + 7000000 + 5000000 + 250000,
+  },
+];
+
 const App = () => {
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(mockProducts));
     localStorage.setItem("cart", JSON.stringify(cartMock));
+    localStorage.setItem("transactions", JSON.stringify(mockTransaction));
   }, []);
 
   return (

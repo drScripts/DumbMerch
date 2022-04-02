@@ -3,6 +3,7 @@ import "./ProductCard.css";
 import React from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import CurrencyFormat from "react-currency-format";
 
 const ProductCard = ({ product = {} }) => {
   const {
@@ -23,7 +24,14 @@ const ProductCard = ({ product = {} }) => {
         <Card.Img variant="top" src={fileLink} className={"card-image"} />
         <Card.Body>
           <Card.Title className="text-orange">{name}</Card.Title>
-          <Card.Text>Rp. {price}</Card.Text>
+          <Card.Text>
+            <CurrencyFormat
+              value={price}
+              prefix="Rp. "
+              thousandSeparator={true}
+              displayType={"text"}
+            />
+          </Card.Text>
           <Card.Text>Stock : {stock}</Card.Text>
         </Card.Body>
       </Card>

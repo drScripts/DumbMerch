@@ -5,6 +5,7 @@ import { Navbar } from "../../containers";
 import { Col, Container, Row } from "react-bootstrap";
 import { useParams, useSearchParams } from "react-router-dom";
 import { Button } from "../../components";
+import CurrencyFormat from "react-currency-format";
 
 const DetailProduct = () => {
   const [searchParams] = useSearchParams();
@@ -32,7 +33,12 @@ const DetailProduct = () => {
               {productDesc}
             </p>
             <h3 className="text-end text-orange mb-5 mt-4">
-              Rp.{productPrice}
+              <CurrencyFormat
+                value={productPrice}
+                prefix="Rp. "
+                thousandSeparator={true}
+                displayType={"text"}
+              />
             </h3>
             <Button title="Buy" width="w-100" bgColor="bg-red" />
           </Col>
