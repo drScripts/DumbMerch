@@ -1,0 +1,13 @@
+.productsFields {
+  max-height: 71vh;
+  overflow-y: scroll;
+}
+
+.productsFields::-webkit-scrollbar {
+  width: 3px;
+}
+
+.productsFields::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}

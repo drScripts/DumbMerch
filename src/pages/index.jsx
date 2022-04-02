@@ -11,6 +11,7 @@ import Cart from "./Cart";
 import AddCategory from "./AddCategory";
 import AddProduct from "./AddProduct";
 import DetailTransaction from "./DetailTransaction";
+import Checkout from "./Checkout";
 
 export {
   Auth,
@@ -26,4 +27,5 @@ export {
   AddCategory,
   AddProduct,
   DetailTransaction,
+  Checkout,
 };

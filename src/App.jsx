@@ -14,6 +14,7 @@ import {
   Product,
   Profile,
   DetailTransaction,
+  Checkout,
 } from "./pages";
 import { Adminmiddleware, AuthMiddleware } from "./middleware";
 import MainMiddleware from "./middleware/MainMiddleware";
@@ -268,6 +269,7 @@ const App = () => {
           <Route path={"profile"} element={<Profile />} />
           <Route path={"complain"} element={<Complain />} />
           <Route path={"cart"} element={<Cart />} />
+          <Route path={"checkout"} element={<Checkout />} />
           <Route
             path={"transaction/:transactionId"}
             element={<DetailTransaction />}

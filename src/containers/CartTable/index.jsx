@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import { CartTableItem } from "../../components";
 import CurrencyFormat from "react-currency-format";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   const [carts, setCarts] = useState([]);
@@ -80,9 +81,11 @@ const Index = () => {
             />
           </th>
           <th>
-            <Button variant="success" className="text-light">
-              Checkout
-            </Button>
+            <Link to="/checkout">
+              <Button variant="success" className="text-light">
+                Checkout
+              </Button>
+            </Link>
           </th>
         </tr>
       </tfoot>
