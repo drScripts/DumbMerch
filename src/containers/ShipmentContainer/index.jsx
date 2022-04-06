@@ -1,13 +1,117 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CurrencyFormat from "react-currency-format";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import { SimpleSelect } from "../../components";
+import { privateGet } from "../../services";
 
 const ShipmentContainer = () => {
   const [shipment, setShipment] = useState("jne");
+  const [shipmentType, setShipmentType] = useState([]);
+  const [province, setProvince] = useState(null);
+  const [city, setCity] = useState(null);
+  const [cost, setCost] = useState(0);
+  const [provinces, setProvinces] = useState([
+    {
+      label: "Select Your Province",
+      value: "",
+    },
+  ]);
+  const [cities, setCities] = useState([
+    {
+      label: "Select your province first",
+      value: "",
+    },
+  ]);
+
+  const onSelectChange = (value) => {
+    if (value.name === "province") {
+      setProvince(value.value);
+    } else if (value.name === "city") {
+      setCity(value.value);
+    } else if (value.name === "shipment_type") {
+      setCost(parseInt(value.value));
+    }
+  };
 
   const shipmentChangeHandler = (e) => {
     setShipment(e.target.value);
   };
+
+  const getShipmentCity = useCallback(async () => {
+    const { data, status } = await privateGet(`/shipment/cities/${province}`);
+
+    if (status === 200) {
+      const mappedData = data.map((value, index) => {
+        return {
+          label: value.type + " " + value.city_name,
+          value: value.city_id,
+        };
+      });
+      mappedData.unshift({
+        label: "Select your city",
+        value: "",
+      });
+      setCities(mappedData);
+    }
+  }, [province]);
+
+  const getShipmentCost = useCallback(async () => {
+    if (shipment && city) {
+      const { data, status } = await privateGet("/shipment/cost", {
+        destination_city: city,
+        courier: shipment,
+      });
+
+      if (status === 200) {
+        const mappedData = data[0]?.costs?.map((costs, index) => {
+          const type = costs?.service;
+          const estd = costs.cost[0]?.etd + " Day";
+          const cost = costs.cost[0]?.value;
+          return {
+            label: `${type} - ${estd} = ${cost}`,
+            value: cost,
+          };
+        });
+        mappedData.unshift({
+          label: "Select shipment type",
+          value: 0,
+        });
+        setShipmentType(mappedData);
+      }
+    }
+  }, [city, shipment]);
+
+  const getShipmentProvinces = async () => {
+    const { data, status } = await privateGet("/shipment/provinces");
+
+    const newData = data.map((value, index) => {
+      return {
+        label: value.province,
+        value: value.province_id,
+      };
+    });
+
+    newData.unshift({
+      label: "select your province",
+      value: "",
+    });
+
+    if (status === 200) {
+      setProvinces(newData);
+    }
+  };
+
+  useEffect(() => {
+    getShipmentProvinces();
+  }, []);
+
+  useEffect(() => {
+    getShipmentCity();
+  }, [getShipmentCity]);
+
+  useEffect(() => {
+    getShipmentCost();
+  }, [getShipmentCost]);
 
   return (
     <Col md={6}>
@@ -25,28 +129,25 @@ const ShipmentContainer = () => {
         of Lorem Ipsum.
       </p>
       <Row className="mb-3">
-        <Col md={6}>
-          <Form.Select
-            aria-label="Default select example"
-            className="bg-semi-dark-grey text-light"
-          >
-            <option>Select Your Provence</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </Form.Select>
-        </Col>
-        <Col md={6}>
-          <Form.Select
-            aria-label="Default select example"
-            className="bg-semi-dark-grey text-light"
-          >
-            <option>Select Your City</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </Form.Select>
-        </Col>
+        <SimpleSelect
+          datas={provinces}
+          label={"Select Your Province"}
+          onChangeHandler={onSelectChange}
+          name="province"
+        />
+        <SimpleSelect
+          datas={cities}
+          label={"Select Your City"}
+          onChangeHandler={onSelectChange}
+          name="city"
+        />
+        <SimpleSelect
+          datas={shipmentType}
+          label={"Select Your Shipment Type"}
+          onChangeHandler={onSelectChange}
+          name="shipment_type"
+          md={12}
+        />
       </Row>
       <div className="d-flex gap-4 mb-3">
         <Form.Check
@@ -84,16 +185,7 @@ const ShipmentContainer = () => {
       <h5 className="text-light">
         Shipment Cost :{" "}
         <CurrencyFormat
-          value={0}
-          prefix={"Rp. "}
-          thousandSeparator={true}
-          displayType={"text"}
-        />
-      </h5>
-      <h5 className="text-light">
-        Services Cost :{" "}
-        <CurrencyFormat
-          value={5000}
+          value={cost}
           prefix={"Rp. "}
           thousandSeparator={true}
           displayType={"text"}
@@ -102,13 +194,19 @@ const ShipmentContainer = () => {
       <h5 className="text-light">
         Total :{" "}
         <CurrencyFormat
-          value={1000000}
+          value={1000000 + cost}
           prefix={"Rp. "}
           thousandSeparator={true}
           displayType={"text"}
         />
       </h5>
-      <Button disabled variant="success" className="w-100 mt-4 mb-3">
+      <Button
+        variant="success"
+        className="w-100 mt-4 mb-3"
+        onClick={() => {
+          console.log(shipment);
+        }}
+      >
         Checkout
       </Button>
     </Col>
