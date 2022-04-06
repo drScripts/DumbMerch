@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { Navbar } from "../../containers";
+import { Navbar, FilterProducts } from "../../containers";
 import { ProductCard } from "../../components";
 
 const HomePage = () => {
@@ -15,6 +15,7 @@ const HomePage = () => {
       <Navbar />
       <Container className="mt-5">
         <h2 className="text-orange mb-3">Product</h2>
+        <FilterProducts />
         <Row>
           {products.map((product, i) => (
             <Col md={3} className="mb-3" key={product.id}>

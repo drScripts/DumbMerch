@@ -90,3 +90,15 @@ body::-webkit-scrollbar-thumb {
 .text-justify {
   text-align: justify;
 }
+
+.brr-none {
+  border-right: none;
+}
+
+.bg-semi-dark-grey:focus {
+  background-color: #303030;
+}
+
+.medium-width {
+  width: 500px;
+}

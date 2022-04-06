@@ -6,6 +6,7 @@ import ChatSection from "./ChatSection";
 import ChatUserList from "./ChatUserList";
 import CartTable from "./CartTable";
 import ShipmentContainer from "./ShipmentContainer";
+import FilterProducts from "./FilterProducts";
 
 export {
   AuthForm,
@@ -16,4 +17,5 @@ export {
   ChatUserList,
   CartTable,
   ShipmentContainer,
+  FilterProducts,
 };
