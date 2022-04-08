@@ -3,6 +3,7 @@ import CurrencyFormat from "react-currency-format";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { SimpleSelect } from "../../components";
 import { privateGet } from "../../services";
+import { toast } from "react-toastify";
 
 const ShipmentContainer = () => {
   const [shipment, setShipment] = useState("jne");
@@ -10,6 +11,7 @@ const ShipmentContainer = () => {
   const [province, setProvince] = useState(null);
   const [city, setCity] = useState(null);
   const [cost, setCost] = useState(0);
+
   const [provinces, setProvinces] = useState([
     {
       label: "Select Your Province",
@@ -41,21 +43,24 @@ const ShipmentContainer = () => {
     const { data, status } = await privateGet(`/shipment/cities/${province}`);
 
     if (status === 200) {
-      const mappedData = data.map((value, index) => {
-        return {
-          label: value.type + " " + value.city_name,
-          value: value.city_id,
-        };
-      });
-      mappedData.unshift({
-        label: "Select your city",
-        value: "",
-      });
-      setCities(mappedData);
+      if (data) {
+        const mappedData = data.map((value, index) => {
+          return {
+            label: value.type + " " + value.city_name,
+            value: value.city_id,
+          };
+        });
+        mappedData.unshift({
+          label: "Select your city",
+          value: "",
+        });
+        setCities(mappedData);
+      }
     }
   }, [province]);
 
   const getShipmentCost = useCallback(async () => {
+    setCost(0);
     if (shipment && city) {
       const { data, status } = await privateGet("/shipment/cost", {
         destination_city: city,
@@ -68,7 +73,7 @@ const ShipmentContainer = () => {
           const estd = costs.cost[0]?.etd + " Day";
           const cost = costs.cost[0]?.value;
           return {
-            label: `${type} - ${estd} = ${cost}`,
+            label: `${type} - ${estd}`,
             value: cost,
           };
         });
@@ -82,31 +87,38 @@ const ShipmentContainer = () => {
   }, [city, shipment]);
 
   const getShipmentProvinces = async () => {
-    const { data, status } = await privateGet("/shipment/provinces");
-
-    const newData = data.map((value, index) => {
-      return {
-        label: value.province,
-        value: value.province_id,
-      };
-    });
-
-    newData.unshift({
-      label: "select your province",
-      value: "",
-    });
+    const { data, status, message } = await privateGet("/shipment/provinces");
 
     if (status === 200) {
-      setProvinces(newData);
+      const newData = data?.map((value, index) => {
+        return {
+          label: value.province,
+          value: value.province_id,
+        };
+      });
+
+      if (newData) {
+        newData.unshift({
+          label: "select your province",
+          value: "",
+        });
+        setProvinces(newData);
+      }
+    } else {
+      toast.error(message);
     }
   };
 
   useEffect(() => {
-    getShipmentProvinces();
+    toast.promise(getShipmentProvinces, {
+      pending: "Getting province data!",
+    });
   }, []);
 
   useEffect(() => {
-    getShipmentCity();
+    toast.promise(getShipmentCity, {
+      pending: "Getting city data!",
+    });
   }, [getShipmentCity]);
 
   useEffect(() => {
@@ -140,7 +152,39 @@ const ShipmentContainer = () => {
           label={"Select Your City"}
           onChangeHandler={onSelectChange}
           name="city"
-        />
+        />{" "}
+        <div className="d-flex gap-4 mb-3">
+          <Form.Check
+            type={"radio"}
+            id={`jne`}
+            label={`JNE`}
+            className="text-light"
+            checked={shipment === "jne"}
+            name={"shipment"}
+            value="jne"
+            onChange={shipmentChangeHandler}
+          />
+          <Form.Check
+            type={"radio"}
+            id={`pos`}
+            label={`POS INDONESIA`}
+            className="text-light"
+            name={"shipment"}
+            checked={shipment === "pos"}
+            value="pos"
+            onChange={shipmentChangeHandler}
+          />
+          <Form.Check
+            type={"radio"}
+            id={`tiki`}
+            label={`TIKI`}
+            className="text-light"
+            name={"shipment"}
+            checked={shipment === "tiki"}
+            value="tiki"
+            onChange={shipmentChangeHandler}
+          />
+        </div>
         <SimpleSelect
           datas={shipmentType}
           label={"Select Your Shipment Type"}
@@ -149,38 +193,6 @@ const ShipmentContainer = () => {
           md={12}
         />
       </Row>
-      <div className="d-flex gap-4 mb-3">
-        <Form.Check
-          type={"radio"}
-          id={`jne`}
-          label={`JNE`}
-          className="text-light"
-          checked={shipment === "jne"}
-          name={"shipment"}
-          value="jne"
-          onChange={shipmentChangeHandler}
-        />
-        <Form.Check
-          type={"radio"}
-          id={`pos`}
-          label={`POS INDONESIA`}
-          className="text-light"
-          name={"shipment"}
-          checked={shipment === "pos"}
-          value="pos"
-          onChange={shipmentChangeHandler}
-        />
-        <Form.Check
-          type={"radio"}
-          id={`tiki`}
-          label={`TIKI`}
-          className="text-light"
-          name={"shipment"}
-          checked={shipment === "tiki"}
-          value="tiki"
-          onChange={shipmentChangeHandler}
-        />
-      </div>
 
       <h5 className="text-light">
         Shipment Cost :{" "}

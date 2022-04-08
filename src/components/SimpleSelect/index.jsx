@@ -1,7 +1,14 @@
 import React from "react";
 import { Col, Form } from "react-bootstrap";
 
-const SimpleSelect = ({ datas, md = 6, label, name, onChangeHandler }) => {
+const SimpleSelect = ({
+  datas,
+  md = 6,
+  label,
+  name,
+  onChangeHandler,
+  value,
+}) => {
   const onChange = (e) => {
     onChangeHandler({
       name: e.target.name,
@@ -18,6 +25,8 @@ const SimpleSelect = ({ datas, md = 6, label, name, onChangeHandler }) => {
           className="bg-semi-dark-grey text-light"
           name={name}
           onChange={onChange}
+          defaultValue={-1}
+          value={value}
         >
           {datas.map((data, index) => (
             <option value={data.value} key={index}>

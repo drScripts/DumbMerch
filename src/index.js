@@ -4,11 +4,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/global.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Router from "./App";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router />
+    <ToastContainer theme="dark" />
   </React.StrictMode>,
   document.getElementById("root")
 );
