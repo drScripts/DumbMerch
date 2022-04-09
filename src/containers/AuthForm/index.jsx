@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Form as BootstrapForm } from "react-bootstrap";
 import { Button, Card, Form } from "../../components";
 import { useNavigate } from "react-router-dom";
+import { pubPost } from "../../services";
+import { toast } from "react-toastify";
 
 const Index = ({ isLogin = false }) => {
   const navigate = useNavigate();
@@ -19,22 +21,29 @@ const Index = ({ isLogin = false }) => {
     });
   };
 
-  const onSubmits = (e) => {
-    e.preventDefault();
-
-    const isAdmin = state.email.search("admin") !== -1;
-
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        name: "Nathanael V D",
-        email: state.email,
-        password: state.password,
-        role: isAdmin ? "admin" : "user",
-      })
+  const login = async () => {
+    const { email, password } = state;
+    const { data, message, status } = await pubPost(
+      "/login",
+      { email, password },
+      true
     );
 
-    navigate("/");
+    if (status === 200) {
+      localStorage.setItem("usritms", JSON.stringify(data.user));
+      localStorage.setItem("usrtbrirtkn", data.token);
+      navigate("/");
+    } else {
+      toast.error(message);
+    }
+  };
+
+  const register = () => {};
+
+  const onSubmits = async (e) => {
+    e.preventDefault();
+
+    isLogin ? await login() : await register();
   };
   return (
     <BootstrapForm onSubmit={onSubmits}>

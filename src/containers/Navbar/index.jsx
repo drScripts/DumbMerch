@@ -16,12 +16,12 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const onLogoutHandler = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("usritms");
 
     navigate("/login");
   };
 
-  const { role = "" } = JSON.parse(localStorage.getItem("user"));
+  const { role = "" } = JSON.parse(localStorage.getItem("usritms"));
 
   return (
     <BootstrapNavbar bg="none" variant="dark" expand="lg">
