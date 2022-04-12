@@ -1,10 +1,13 @@
-import React from "react";
+import { useContext } from "react";
 import { Outlet, Navigate } from "react-router-dom";
+import { UserContext } from "../Context/UserContext";
 
 const AuthMiddleware = () => {
-  const user = JSON.parse(localStorage.getItem("usritms"));
+  const [userState, disptach] = useContext(UserContext); 
 
-  return user?.role === "user" ? <Outlet /> : <Navigate to={"/login"} />;
+  const { role } = userState?.user;
+
+  return role === "user" ? <Outlet /> : <Navigate to={"/login"} />;
 };
 
 export default AuthMiddleware;

@@ -1,12 +1,28 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
 import { Container, Button, Form as BootstrapForm } from "react-bootstrap";
 import { Navbar } from "../../containers";
 import { Form, InputFile } from "../../components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { API } from "../../services";
-import Select from "react-select";
 import { toast } from "react-toastify";
+import Select from "react-select";
 import { useQuery, useMutation } from "react-query";
+import { UserContext } from "../../Context/UserContext";
+
+const genderSelectOptions = [
+  {
+    value: "",
+    label: "Select Your Gender",
+  },
+  {
+    value: "female",
+    label: "Female",
+  },
+  {
+    value: "male",
+    label: "Male",
+  },
+];
 
 const selectStyle = {
   control: (base, state) => ({
@@ -14,6 +30,7 @@ const selectStyle = {
     background: "#d2d2d240",
     borderRadius: "5px",
     border: "2px solid #d3d3d3",
+    color: "#fff",
   }),
   menu: (base) => ({
     ...base,
@@ -23,24 +40,31 @@ const selectStyle = {
   menuList: (base) => ({
     ...base,
     background: "#d2d2d240",
+    color: "#fff",
   }),
   option: (provided, state) => ({
     ...provided,
     color: "black",
   }),
+  input: (styles) => ({ ...styles, color: "#fff" }),
+  singleValue: (styles) => ({ ...styles, color: "#fff" }),
 };
+
 const Index = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
+  const [userState, dispatch] = useContext(UserContext);
+  const [select, setSelect] = useState({
+    value: "",
+    label: "Select Your Gender",
+  });
 
   const [state, setState] = useState({
     name: "",
-    price: 0,
-    stock: 0,
-    description: "",
+    phone_number: "",
+    gender: "",
+    address: "",
     file: {},
-    image_name: "",
-    defaultCategory: [],
   });
 
   const onchangeHandler = (value) => {
@@ -58,53 +82,40 @@ const Index = () => {
   };
 
   const onSelectHandler = (value) => {
-    const mappedData = value.map((category, index) => category.value);
     setState({
       ...state,
-      categories: mappedData,
-      defaultCategory: value,
+      gender: value.value,
     });
+    setSelect(value);
   };
 
-  const getProduct = useCallback(async () => {
-    const { data, status, message } = await API.get(`/product/${id}`).catch(
-      (err) => ({
-        message: err?.response?.data?.message,
-        status: err?.response?.data?.status,
-      })
-    );
-    if (status === 200) {
-      const product = data.data.product;
-      const defaultCategory = product.categories.map((category, index) => ({
-        value: category.id,
-        label: category.name,
-      }));
-
-      product.categories = product.categories.map((category) => category.id);
-
-      setState({
-        ...product,
-        file: {},
-        defaultCategory,
-      });
-    } else {
-      toast.error(message);
-    }
-  }, [id]);
-
-  const { data: categories } = useQuery(
-    "categoryChace",
+  useQuery(
+    "userChace",
     async () => {
-      const { data: response } = await API.get("/categories");
-
-      const mappedData = response.data.categories.map((category, index) => ({
-        value: category.id,
-        label: category.name,
-      }));
-
-      return mappedData;
+      const { data } = await API.get("/user");
+      return data?.data?.user;
     },
     {
+      onSuccess: (data) => {
+        const newData = {
+          phone_number: data?.profile?.phone_number || "",
+          gender: data?.profile?.gender || "",
+          address: data?.profile?.address || "",
+          name: data?.name,
+        };
+
+        if (newData.gender) {
+          setSelect({
+            value: newData.gender,
+            label: newData.gender,
+          });
+        }
+
+        setState({
+          ...state,
+          ...newData,
+        });
+      },
       onError: (err) => {
         const message = err?.response?.data?.message || err.message;
         toast.error(message);
@@ -115,34 +126,37 @@ const Index = () => {
   const { mutate: onSubmitHandler } = useMutation(
     async (e) => {
       e.preventDefault();
-      const { name, price, stock, description, categories, file } = state;
+      const { phone_number, gender, address, file } = state;
 
-      if (name && price && stock && description && categories.length) {
+      if (phone_number && gender && address) {
         const formData = new FormData();
-        formData.append("name", name);
-        formData.append("price", price);
-        formData.append("stock", stock);
-        formData.append("description", description);
-        categories.forEach((category, index) => {
-          formData.append("category_ids[]", category);
-        });
+        formData.append("gender", gender);
+        formData.append("phone_number", phone_number);
+        formData.append("address", address);
 
         if (file.name) {
           formData.append("image", file);
         }
 
-        return await API.patch(`/product/${id}`, formData, {
+        const { data } = await API.patch(`/user`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
+
+        return data?.data?.user;
       } else {
         throw new Error("Please fill all the form!");
       }
     },
     {
-      onSuccess: () => {
-        navigate("/admin/product");
+      onSuccess: (data) => {
+        console.log(data);
+        dispatch({
+          type: "UPDATE_PROFILE",
+          payload: { user: data },
+        });
+        navigate("/profile");
       },
       onError: (err) => {
         const message = err?.response?.data?.message || err.message;
@@ -150,10 +164,6 @@ const Index = () => {
       },
     }
   );
-
-  useEffect(() => {
-    getProduct();
-  }, [getProduct]);
 
   return (
     <div>
@@ -165,49 +175,40 @@ const Index = () => {
             fileName={state.file.name || state.image_name}
             onChange={onFileChange}
           />
-
           <Form
-            placeHolder="Product Name"
+            placeHolder="Your Name"
             type="text"
             value={state.name}
             onChange={onchangeHandler}
             className="mb-3"
             name={"name"}
+            disabled
           />
           <textarea
-            name="description"
+            name="address"
             onChange={(e) =>
               onchangeHandler({ [e.target.name]: e.target.value })
             }
             className="custom-form-input mb-2"
-            placeholder={"Product Descriptions"}
+            placeholder={"Your Address"}
             rows={8}
-            value={state.description}
+            value={state.address}
           ></textarea>
           <Form
-            placeHolder="Product Price"
-            type="number"
-            value={state.price.toString()}
+            placeHolder="Your Phone Number"
+            type="text"
+            value={state.phone_number}
             onChange={onchangeHandler}
             className="mb-3"
-            name={"price"}
-          />
-          <Form
-            placeHolder="Product Stock"
-            type="number"
-            value={state.stock.toString()}
-            onChange={onchangeHandler}
-            className="mb-3"
-            name={"stock"}
+            name={"phone_number"}
           />
           <Select
-            className="mb-5"
-            isMulti
-            styles={selectStyle}
-            placeholder={"Select Product Category"}
-            options={categories}
+            options={genderSelectOptions}
+            placeholder={"Select Your Gender"}
             onChange={onSelectHandler}
-            value={state.defaultCategory}
+            styles={selectStyle}
+            className="mb-5 text-light"
+            value={select}
           />
           <Button type="submit" variant="success" className="w-100 mb-3">
             Save

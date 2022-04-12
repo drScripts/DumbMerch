@@ -16,6 +16,7 @@ const type = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string,
   className: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export const defaultVal = {
@@ -24,6 +25,7 @@ export const defaultVal = {
   name: "",
   value: "",
   className: "",
+  disabled: false,
 };
 
 export default type;

@@ -3,12 +3,13 @@ import { Button, Modal } from "react-bootstrap";
 import CurrencyFormat from "react-currency-format";
 import TrashIcon from "../../assets/trash-icon.png";
 import PropType from "../../propTypes/CartTableItem";
+import { useMutation } from "react-query";
+import { API } from "../../services";
+import { toast } from "react-toastify";
 
 const CartTableItem = (props) => {
-  const { no, id, product, qty, onQtyChange } = props;
-
+  const { no, id, product, qty, onQtyChange, onChange } = props;
   const [show, setShow] = useState(false);
-  const [quantity, setQuantity] = useState(qty);
   const [showImage, setShowImage] = useState(false);
 
   const handleClose = () => {
@@ -20,22 +21,25 @@ const CartTableItem = (props) => {
   };
 
   const handleQty = (type) => {
-    if (type === "DECREMENT") {
-      if (quantity > 1) {
-        setQuantity(quantity - 1);
-        onQtyChange(id, quantity - 1);
-      }
-    } else {
-      setQuantity(quantity + 1);
-      onQtyChange(id, quantity + 1);
+    onQtyChange({ id, type });
+  };
+
+  const { mutate: handleDelete } = useMutation(
+    async () => {
+      setShow(false);
+
+      return await API.delete(`cart/${id}`);
+    },
+    {
+      onError: (err) => {
+        const message = err?.response?.data?.message || err.message;
+        toast.error(message);
+      },
+      onSuccess: () => {
+        onChange();
+      },
     }
-  };
-
-  const handleDelete = () => {
-    setShow(false);
-
-    console.log(id);
-  };
+  );
 
   return (
     <tr className={`border-botom-light-grey`}>
@@ -45,7 +49,7 @@ const CartTableItem = (props) => {
           className="text-light text-decoration-underline mb-0 cursor-pointer"
           onClick={() => setShowImage(true)}
         >
-          {product.fileName}
+          {product.image_name}
         </p>
       </td>
       <td>{product.name}</td>
@@ -58,25 +62,29 @@ const CartTableItem = (props) => {
         />
       </td>
       <td>
-        <Button
-          className="text-light me-3"
-          variant={"danger"}
-          onClick={() => handleQty("DECREMENT")}
-        >
-          -
-        </Button>
-        {quantity}
-        <Button
-          className="text-light ms-3"
-          variant={"success"}
-          onClick={() => handleQty("INCREMENT")}
-        >
-          +
-        </Button>
+        <div className="d-flex align-items-center">
+          <Button
+            className="text-light me-3"
+            variant={"danger"}
+            onClick={() => handleQty("DECREMENT")}
+            disabled={qty <= 1}
+          >
+            -
+          </Button>
+          {qty}
+          <Button
+            className="text-light ms-3"
+            variant={"success"}
+            onClick={() => handleQty("INCREMENT")}
+            disabled={qty >= product.stock}
+          >
+            +
+          </Button>
+        </div>
       </td>
       <td>
         <CurrencyFormat
-          value={product.price * quantity}
+          value={product.price * qty}
           thousandSeparator={true}
           prefix={"Rp. "}
           displayType="text"
@@ -109,12 +117,12 @@ const CartTableItem = (props) => {
         >
           <Modal.Header closeButton>
             <Modal.Title id="example-modal-sizes-title-lg">
-              {product.fileName}
+              {product.image_name}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <img
-              src={product.fileLink}
+              src={product.image_url}
               alt={product.name}
               height={450}
               className="w-100"

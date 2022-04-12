@@ -1,17 +1,32 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropType from "../../propTypes/CategoryTableItem";
 import { Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { API } from "../../services";
+import { useMutation } from "react-query";
 
 const CategoryTableItem = (props) => {
-  const { no, name, id } = props;
+  const { no, name, id, onChange } = props;
 
   const [show, setShow] = useState(false);
 
-  const handleDelete = () => {
-    setShow(false);
-    console.log(id);
-  };
+  const { mutate: handleDelete } = useMutation(
+    async () => {
+      setShow(false);
+
+      return await API.delete(`/category/${id}`);
+    },
+    {
+      onSuccess: () => {
+        onChange();
+      },
+      onError: (err) => {
+        const message = err?.response?.data?.message || err.message;
+        toast.error(message);
+      },
+    }
+  );
 
   const handleClose = () => {
     setShow(false);

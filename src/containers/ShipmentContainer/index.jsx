@@ -1,12 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import CurrencyFormat from "react-currency-format";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { SimpleSelect } from "../../components";
-import { privateGet } from "../../services";
+import { API } from "../../services";
 import { toast } from "react-toastify";
+import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../Context/UserContext";
 
-const ShipmentContainer = () => {
-  const [shipment, setShipment] = useState("jne");
+const ShipmentContainer = ({ total }) => {
+  const navigate = useNavigate();
+  const [userState, dispatch] = useContext(UserContext);
+  const [shipment, setShipment] = useState();
   const [shipmentType, setShipmentType] = useState([]);
   const [province, setProvince] = useState(null);
   const [city, setCity] = useState(null);
@@ -40,11 +45,11 @@ const ShipmentContainer = () => {
   };
 
   const getShipmentCity = useCallback(async () => {
-    const { data, status } = await privateGet(`/shipment/cities/${province}`);
+    const { data, status } = await API.get(`/shipment/cities/${province}`);
 
     if (status === 200) {
       if (data) {
-        const mappedData = data.map((value, index) => {
+        const mappedData = data?.data?.map((value, index) => {
           return {
             label: value.type + " " + value.city_name,
             value: value.city_id,
@@ -62,13 +67,15 @@ const ShipmentContainer = () => {
   const getShipmentCost = useCallback(async () => {
     setCost(0);
     if (shipment && city) {
-      const { data, status } = await privateGet("/shipment/cost", {
-        destination_city: city,
-        courier: shipment,
+      const { data, status } = await API.get("/shipment/cost", {
+        params: {
+          destination_city: city,
+          courier: shipment,
+        },
       });
-
+      console.log(data);
       if (status === 200) {
-        const mappedData = data[0]?.costs?.map((costs, index) => {
+        const mappedData = data?.data[0]?.costs?.map((costs, index) => {
           const type = costs?.service;
           const estd = costs.cost[0]?.etd + " Day";
           const cost = costs.cost[0]?.value;
@@ -87,10 +94,10 @@ const ShipmentContainer = () => {
   }, [city, shipment]);
 
   const getShipmentProvinces = async () => {
-    const { data, status, message } = await privateGet("/shipment/provinces");
+    const { data, status, message } = await API.get("/shipment/provinces");
 
     if (status === 200) {
-      const newData = data?.map((value, index) => {
+      const newData = data?.data?.map((value, index) => {
         return {
           label: value.province,
           value: value.province_id,
@@ -108,6 +115,37 @@ const ShipmentContainer = () => {
       toast.error(message);
     }
   };
+
+  const { mutate: onSubmit } = useMutation(
+    async () => {
+      if (cost !== 0) {
+        const body = JSON.stringify({
+          shipment_service: shipment,
+          shipment_cost: cost,
+        });
+        return await API.post("transaction", body, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      } else {
+        throw new Error("Please select shipment type");
+      }
+    },
+    {
+      onError: (err) => {
+        const message = err?.response?.data?.message || err.message;
+        toast.error(message);
+      },
+      onSuccess: (data) => {
+        const id = data?.data?.data?.transaction?.id;
+        dispatch({
+          type: "CART_RESET",
+        });
+        navigate(`/transaction/${id}`);
+      },
+    }
+  );
 
   useEffect(() => {
     toast.promise(getShipmentProvinces, {
@@ -130,15 +168,7 @@ const ShipmentContainer = () => {
       <h2 className="text-orange mb-4">Detail Shipment</h2>
       <h4 className="text-light">Address</h4>
       <p className="text-justify text-light">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged. It was popularised in the 1960s with the release
-        of Letraset sheets containing Lorem Ipsum passages, and more recently
-        with desktop publishing software like Aldus PageMaker including versions
-        of Lorem Ipsum.
+        {userState?.user?.profile?.address}
       </p>
       <Row className="mb-3">
         <SimpleSelect
@@ -206,19 +236,13 @@ const ShipmentContainer = () => {
       <h5 className="text-light">
         Total :{" "}
         <CurrencyFormat
-          value={1000000 + cost}
+          value={total + cost}
           prefix={"Rp. "}
           thousandSeparator={true}
           displayType={"text"}
         />
       </h5>
-      <Button
-        variant="success"
-        className="w-100 mt-4 mb-3"
-        onClick={() => {
-          console.log(shipment);
-        }}
-      >
+      <Button variant="success" className="w-100 mt-4 mb-3" onClick={onSubmit}>
         Checkout
       </Button>
     </Col>

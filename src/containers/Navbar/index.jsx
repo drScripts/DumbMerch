@@ -5,23 +5,25 @@ import {
   Nav,
   Badge,
 } from "react-bootstrap";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useContext } from "react";
 import Logo from "../../assets/dumb-merch-logo.png";
 import CartIcon from "../../assets/cart-icon.png";
+import { UserContext } from "../../Context/UserContext";
 
 const Navbar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-  const navigate = useNavigate();
+  const [userState, dispatch] = useContext(UserContext);
 
   const onLogoutHandler = () => {
     localStorage.removeItem("usritms");
-
-    navigate("/login");
+    dispatch({
+      type: "USER_LOGOUT",
+    });
   };
 
-  const { role = "" } = JSON.parse(localStorage.getItem("usritms"));
+  const { role = "" } = userState?.user;
 
   return (
     <BootstrapNavbar bg="none" variant="dark" expand="lg">
@@ -104,7 +106,7 @@ const Navbar = () => {
                     alt={"cart icon"}
                   />
                   <Badge bg="" pill className={"position-relative"}>
-                    0
+                    {userState.cartCount}
                   </Badge>
                 </div>
               </Link>

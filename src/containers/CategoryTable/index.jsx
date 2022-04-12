@@ -1,40 +1,27 @@
-import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { CategoryTableItem } from "../../components";
-
-const mockCategory = [
-  {
-    id: 1,
-    name: "Mouse",
-  },
-  {
-    id: 2,
-    name: "Keyboard",
-  },
-  {
-    id: 3,
-    name: "Bag",
-  },
-  {
-    id: 4,
-    name: "Stationary",
-  },
-  {
-    id: 5,
-    name: "Doll",
-  },
-  {
-    id: 6,
-    name: "Pillow",
-  },
-];
+import { API } from "../../services";
+import { toast } from "react-toastify";
+import { useQuery } from "react-query";
 
 const Index = () => {
-  const [categories, setCategories] = useState([]);
+  const { data: categories, refetch } = useQuery(
+    "categoriesChace",
+    async () => {
+      const { data } = await API.get("/categories");
+      return data.data.categories;
+    },
+    {
+      onError: (err) => {
+        toast.error(err?.response?.data?.message);
+      },
+    }
+  );
 
-  useEffect(() => {
-    setCategories(mockCategory);
-  }, []);
+  const onChange = () => {
+    refetch();
+  };
+
   return (
     <Table responsive striped hover variant="dark" className="mt-3">
       <thead>
@@ -45,12 +32,13 @@ const Index = () => {
         </tr>
       </thead>
       <tbody>
-        {categories.map((val, i) => (
+        {categories?.map((val, i) => (
           <CategoryTableItem
             id={val.id}
             name={val.name}
             no={i + 1}
             key={val.id}
+            onChange={onChange}
           />
         ))}
       </tbody>

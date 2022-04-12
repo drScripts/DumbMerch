@@ -10,7 +10,7 @@ const SingleTransactionItem = ({ product, qty, date = false }) => {
     >
       <div className="d-flex gap-4 align-items-center">
         <img
-          src={product.fileLink}
+          src={product.image_url}
           alt=""
           className={`${styles.productImage}`}
         />
@@ -23,7 +23,7 @@ const SingleTransactionItem = ({ product, qty, date = false }) => {
               <p className={`text-orange mb-0`}>Saturday, 14 Juli 2021</p>
             )}
             <p className={`text-light mb-0`}>
-              Price :{" "}
+              Price :
               <CurrencyFormat
                 value={product.price}
                 prefix={"Rp."}
@@ -31,16 +31,14 @@ const SingleTransactionItem = ({ product, qty, date = false }) => {
                 thousandSeparator={true}
               />
             </p>
-            <p className={`text-light mb-4`}>
-              Quantity : {product.qty || qty}{" "}
-            </p>
+            <p className={`text-light mb-4`}>Quantity : {qty}</p>
           </div>
 
           <div>
             <p className={`text-light text-bold mb-0`}>
               <b>Sub Total</b> :{" "}
               <CurrencyFormat
-                value={product.price * (product.qty || qty)}
+                value={product.price * qty}
                 prefix={"Rp."}
                 displayType="text"
                 thousandSeparator={true}

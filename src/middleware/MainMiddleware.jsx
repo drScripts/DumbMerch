@@ -1,11 +1,12 @@
-import React from "react";
+import { useContext } from "react";
 import { Outlet, Navigate } from "react-router-dom";
+import { UserContext } from "../Context/UserContext";
 
 const MainMiddleware = () => {
-  const user = JSON.parse(localStorage.getItem("usritms"));
-  console.log(user);
-  if (user) {
-    return user.role === "admin" ? (
+  // eslint-disable-next-line no-unused-vars
+  const [userState, dispatch] = useContext(UserContext);
+  if (userState.user.role) {
+    return userState?.user?.role === "admin" ? (
       <Navigate to={"/admin"} />
     ) : (
       <Navigate to={"/"} />

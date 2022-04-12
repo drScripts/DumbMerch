@@ -12,6 +12,7 @@ import AddCategory from "./AddCategory";
 import AddProduct from "./AddProduct";
 import DetailTransaction from "./DetailTransaction";
 import Checkout from "./Checkout";
+import EditProfile from "./EditProfile";
 
 export {
   Auth,
@@ -28,4 +29,5 @@ export {
   AddProduct,
   DetailTransaction,
   Checkout,
+  EditProfile,
 };

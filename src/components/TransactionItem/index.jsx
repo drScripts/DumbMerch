@@ -10,54 +10,65 @@ const Index = ({ transaction }) => {
     let colWidth = products.length >= 2 ? 6 : 12;
 
     return (
-      <Row className={`${styles.transactionImageField}`}>
-        {products.map((val, i) => {
-          const height =
-            products.length === 3 && i === 2
-              ? styles.halfHeight
-              : styles.fullHeight;
+      <div className={`${styles.imageContainer}`}>
+        <Row className={`${styles.transactionImageField}`}>
+          {products.map((val, i) => {
+            const height =
+              products.length === 3 && i === 2
+                ? styles.halfHeight
+                : styles.fullHeight;
 
-          const columnSize = products.length === 3 && i === 2 ? 12 : colWidth;
+            const columnSize = products.length === 3 && i === 2 ? 12 : colWidth;
 
-          const moreProduct = products.length - 3;
+            const moreProduct = products.length - 3;
 
-          if (i < 4) {
-            if (products.length > 4 && i === 3) {
-              return (
-                <Col
-                  md={columnSize}
-                  className={`${styles.columns} d-flex align-items-center justify-content-center`}
-                  key={i}
-                >
-                  <h3 className="text-light">+{moreProduct}</h3>
-                </Col>
-              );
+            if (i < 4) {
+              if (products.length > 4 && i === 3) {
+                return (
+                  <Col
+                    md={columnSize}
+                    className={`${styles.columns} d-flex align-items-center justify-content-center`}
+                    key={i}
+                  >
+                    <h3 className="text-light">+{moreProduct}</h3>
+                  </Col>
+                );
+              } else {
+                return (
+                  <Col md={columnSize} className={`${styles.columns}`} key={i}>
+                    <img
+                      src={val}
+                      alt=""
+                      className={`${styles.productImage} ${height}`}
+                    />
+                  </Col>
+                );
+              }
             } else {
-              return (
-                <Col md={columnSize} className={`${styles.columns}`} key={i}>
-                  <img
-                    src={val}
-                    alt=""
-                    className={`${styles.productImage} ${height}`}
-                  />
-                </Col>
-              );
+              return null;
             }
-          } else {
-            return null;
-          }
-        })}
-      </Row>
+          })}
+        </Row>
+      </div>
     );
   };
 
-  const productName = transaction.products
-    .map((product, index) => product.name)
+  const productName = transaction.transactionItems
+    .map((item, index) => item?.itemProduct?.name)
     .join(", ");
 
-  const productImage = transaction.products.map(
-    (product, index) => product.fileLink
+  const productImage = transaction.transactionItems?.map(
+    (item, index) => item?.itemProduct?.image_url
   );
+
+  const getDate = (dates) => {
+    const dateTime = new Date(dates);
+    const date = dateTime.getDate();
+    const month = dateTime.getMonth();
+    const year = dateTime.getFullYear();
+
+    return `${date}-${month}-${year}`;
+  };
 
   return (
     <Link
@@ -67,14 +78,16 @@ const Index = ({ transaction }) => {
       <div
         className={`d-flex align-items-center justify-content-between bg-semi-dark-grey px-4 py-3 mb-3 ${styles.cardTransaction}`}
       >
-        <div className="d-flex gap-4 align-items-center">
+        <div className="d-flex gap-4 align-items-center mb-2">
           {generateProductImg(productImage)}
           <div className="d-flex flex-column justify-content-between ">
             <div>
-              <h3 className="text-orange mb-0 ellipsis max-line-1">
+              <h3 className="text-orange mb-0 ellipsis max-line-1 w-80">
                 {productName}
               </h3>
-              <p className={`text-orange mb-4`}>Saturday, 14 Juli 2021</p>
+              <p className={`text-orange mb-4`}>
+                {getDate(transaction?.createdAt)}
+              </p>
             </div>
 
             <div>

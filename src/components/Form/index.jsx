@@ -2,7 +2,8 @@ import "./Form.css";
 import PropType, { defaultVal } from "../../propTypes/FormType";
 
 const Form = (props) => {
-  const { type, placeHolder, name, onChange, value, className } = props;
+  const { type, placeHolder, name, onChange, value, className, disabled } =
+    props;
 
   const onChangeForm = (e) => {
     onChange({ [e.target.name]: e.target.value });
@@ -16,6 +17,7 @@ const Form = (props) => {
       onChange={onChangeForm}
       className={`custom-form-input ${className}`}
       name={name}
+      disabled={disabled}
     />
   );
 };

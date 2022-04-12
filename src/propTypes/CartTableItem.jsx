@@ -6,6 +6,7 @@ const type = {
   product: PropTypes.object.isRequired,
   qty: PropTypes.number.isRequired,
   onQtyChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default type;

@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Container, Button, Form as BootstrapForm } from "react-bootstrap";
 import { Navbar } from "../../containers";
 import { Form } from "../../components";
+import { toast } from "react-toastify";
+import { API } from "../../services";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
 
 const Index = () => {
   const [state, setState] = useState({
     name: "",
   });
+  const navigate = useNavigate();
 
   const onchangeHandler = (text) => {
     setState({
@@ -15,10 +20,32 @@ const Index = () => {
     });
   };
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    console.log(state);
-  };
+  const { mutate: onSubmitHandler } = useMutation(
+    async (e) => {
+      e.preventDefault();
+
+      if (state.name) {
+        const body = JSON.stringify({ name: state.name });
+
+        return await API.post("/category", body, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      } else {
+        throw new Error("Please insert the category name!");
+      }
+    },
+    {
+      onError: (err) => {
+        const message = err?.response?.data?.message || err.message;
+        toast.error(message);
+      },
+      onSuccess: () => {
+        navigate("/admin/category");
+      },
+    }
+  );
 
   return (
     <div>

@@ -1,54 +1,83 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
 import { Table, Button } from "react-bootstrap";
 import { CartTableItem } from "../../components";
 import CurrencyFormat from "react-currency-format";
 import { Link } from "react-router-dom";
+import { useQuery, useMutation } from "react-query";
+import { API } from "../../services";
+import { toast } from "react-toastify";
+import { UserContext } from "../../Context/UserContext";
 
 const Index = () => {
-  const [carts, setCarts] = useState([]);
   const [total, setTotal] = useState(0);
+  // eslint-disable-next-line no-unused-vars
+  const [userState, dispatch] = useContext(UserContext);
 
   const countTotal = (carts) => {
     let totalNow = 0;
-    carts.forEach((val, i) => {
+    carts?.forEach((val, i) => {
       totalNow += val.product.price * val.qty;
     });
     setTotal(totalNow);
   };
 
-  const updateCarts = (id, qty) => {
-    const cart = JSON.parse(localStorage.getItem("cart"));
+  const { data: carts, refetch } = useQuery(
+    "cartChace",
+    async () => {
+      console.log("get");
+      const { data } = await API.get("carts");
+      return data.data.carts;
+    },
+    {
+      onError: (err) => {
+        const message = err?.response?.data?.message || err.message;
+        toast.error(message);
+      },
+      onSuccess: (data) => {
+        dispatch({
+          type: "UPDATE_CART_COUNT",
+          payload: {
+            carts: data,
+          },
+        });
+        countTotal(data);
+      },
+    }
+  );
 
-    const newCart = cart.map((val, i) => {
-      if (val.id === id) {
-        val.qty = qty;
-      }
-
-      return val;
-    });
-    localStorage.setItem("cart", JSON.stringify(newCart));
-    getCarts();
-    countTotal();
+  const onChange = () => {
+    refetch();
   };
 
-  const getCarts = () => {
-    setCarts(JSON.parse(localStorage.getItem("cart")));
-  };
+  const { mutate: updateCarts } = useMutation(
+    async (args) => {
+      const { id, type } = args;
 
-  useEffect(() => {
-    countTotal(carts);
-  }, [carts]);
+      const body = JSON.stringify({ quantity: 1, event: type.toLowerCase() });
 
-  useEffect(() => {
-    getCarts();
-  }, []);
+      return await API.patch(`cart/${id}`, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    {
+      onError: (err) => {
+        const message = err?.response?.data?.message || err.message;
+        toast.error(message);
+      },
+      onSuccess: () => {
+        onChange();
+      },
+    }
+  );
 
   return (
     <Table responsive striped hover variant="dark" className="mt-3">
       <thead>
         <tr>
           <th>No</th>
-          <th>Photo</th>
+          <th className="w-25">Photo</th>
           <th>Product Name</th>
           <th>Price</th>
           <th>Qty</th>
@@ -57,7 +86,7 @@ const Index = () => {
         </tr>
       </thead>
       <tbody>
-        {carts.map((val, i) => (
+        {carts?.map((val, i) => (
           <CartTableItem
             no={i + 1}
             id={val.id}
@@ -65,14 +94,15 @@ const Index = () => {
             qty={val.qty}
             key={val.id}
             onQtyChange={updateCarts}
+            onChange={onChange}
           />
         ))}
       </tbody>
       <tfoot>
         <tr>
           <th>Total</th>
-          <th colSpan={4}></th>
-          <th>
+          <th colSpan={3}></th>
+          <th colSpan={2} className="text-end">
             <CurrencyFormat
               value={total}
               prefix={"Rp. "}

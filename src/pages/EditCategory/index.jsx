@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Container, Button, Form as BootstrapForm } from "react-bootstrap";
 import { Navbar } from "../../containers";
 import { Form } from "../../components";
+import { useParams, useNavigate } from "react-router-dom";
+import { API } from "../../services";
+import { toast } from "react-toastify";
+import { useMutation } from "react-query";
 
 const Index = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [state, setState] = useState({
     name: "",
   });
@@ -15,10 +22,47 @@ const Index = () => {
     });
   };
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    console.log(state);
-  };
+  const getCategory = useCallback(async () => {
+    const { data, status } = await API.get(`/category/${id}`).catch(
+      (err) => err.response
+    );
+
+    if (status === 200) {
+      setState(data.data.category);
+    } else {
+      toast.error(data.data.message);
+    }
+  }, [id]);
+
+  const { mutate: onSubmitHandler } = useMutation(
+    async (e) => {
+      e.preventDefault();
+      if (state.name) {
+        const body = JSON.stringify({ name: state.name });
+
+        return await API.patch(`/category/${id}`, body, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      } else {
+        throw new Error("Please insert category name");
+      }
+    },
+    {
+      onSuccess: (data) => {
+        navigate("/admin/category");
+      },
+      onError: (err) => {
+        const message = err?.response?.data?.message || err.message;
+        toast.error(message);
+      },
+    }
+  );
+
+  useEffect(() => {
+    getCategory();
+  }, [getCategory]);
 
   return (
     <div>

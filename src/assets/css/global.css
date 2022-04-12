@@ -87,6 +87,11 @@ body::-webkit-scrollbar-thumb {
   line-clamp: 3;
 }
 
+.max-line-4 {
+  -webkit-line-clamp: 4; /* number of lines to show */
+  line-clamp: 4;
+}
+
 .text-justify {
   text-align: justify;
 }
@@ -101,4 +106,12 @@ body::-webkit-scrollbar-thumb {
 
 .medium-width {
   width: 500px;
+}
+
+.w-25 {
+  width: 25%;
+}
+
+.w-80 {
+  width: 80%;
 }

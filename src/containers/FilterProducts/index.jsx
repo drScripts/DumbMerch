@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Col,
@@ -8,30 +8,47 @@ import {
   InputGroup,
   Row,
 } from "react-bootstrap";
-import { useSearchParams } from "react-router-dom";
+import { API } from "../../services";
+import { toast } from "react-toastify";
 
-const FilterProducts = () => {
-  const [params, setParams] = useState({});
-
-  const [searchParams, setSearchParams] = useSearchParams();
+const FilterProducts = ({ onChange, onSearch }) => {
+  const [categories, setCategories] = useState([]);
 
   const onChangeHandler = (e) => {
-    setParams({
-      ...params,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const onApply = () => {
-    setSearchParams(params);
-    console.log(params, searchParams);
+    if (e.target.value) {
+      onChange({ [e.target.name]: e.target.value });
+    } else {
+      onChange({ [e.target.name]: "null" });
+    }
   };
 
   const onSearchKey = (e) => {
     if (e.code === "Enter") {
-      onApply();
+      onSearch();
     }
   };
+
+  const getCategories = async () => {
+    const { data, message, status } = await API.get("/categories").catch(
+      (err) => {
+        const responses = err.response;
+        return {
+          message: responses.data.message,
+          status: responses.status,
+        };
+      }
+    );
+
+    if (status === 200) {
+      setCategories(data.data.categories);
+    } else {
+      toast.error(message);
+    }
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   return (
     <Row>
@@ -49,7 +66,7 @@ const FilterProducts = () => {
           <InputGroup.Text
             id="basic-addon2"
             className="bg-semi-dark-grey text-light pe-3"
-            onClick={onApply}
+            onClick={onSearch}
           >
             <i className="bi bi-search"></i>
           </InputGroup.Text>
@@ -101,16 +118,18 @@ const FilterProducts = () => {
                   name="category"
                   onChange={onChangeHandler}
                 >
-                  <option>Select Categories</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="">Select Categories</option>
+                  {categories.map((category, index) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
             </Dropdown.ItemText>
             <Dropdown.Divider />
             <Dropdown.ItemText className="text-end">
-              <Button variant="success" onClick={onApply}>
+              <Button variant="success" onClick={onSearch}>
                 Apply Filter
               </Button>
             </Dropdown.ItemText>

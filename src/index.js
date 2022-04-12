@@ -6,12 +6,20 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Router from "./App";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { QueryClientProvider, QueryClient } from "react-query";
+import UserProvider from "./Context/UserContext";
 // import reportWebVitals from './reportWebVitals';
+
+const client = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router />
-    <ToastContainer theme="dark" />
+    <UserProvider>
+      <QueryClientProvider client={client}>
+        <Router />
+        <ToastContainer theme="dark" />
+      </QueryClientProvider>
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -23,3 +23,7 @@
 .fullHeight {
   height: 100%;
 }
+
+.imageContainer {
+  width: 120px;
+}

@@ -1,50 +1,67 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Form as BootstrapForm } from "react-bootstrap";
 import { Button, Card, Form } from "../../components";
-import { useNavigate } from "react-router-dom";
-import { pubPost } from "../../services";
-import { toast } from "react-toastify";
+import { API } from "../../services";
+import { useMutation } from "react-query";
+import { UserContext } from "../../Context/UserContext";
 
 const Index = ({ isLogin = false }) => {
-  const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
+  const [state, dispatch] = useContext(UserContext);
 
-  const [state, setState] = useState({
+  const [form, setForm] = useState({
     name: "",
     password: "",
     email: "",
   });
 
   const onChangeHandler = (value) => {
-    setState({
-      ...state,
+    setForm({
+      ...form,
       ...value,
     });
   };
 
-  const login = async () => {
-    const { email, password } = state;
-    const { data, message, status } = await pubPost(
-      "/login",
-      { email, password },
-      true
-    );
+  const { mutate: onSubmits } = useMutation(
+    async (e) => {
+      e.preventDefault();
+      const { email, password, name } = form;
+      let forms = { email, password };
+      let path = "/login";
 
-    if (status === 200) {
-      localStorage.setItem("usritms", JSON.stringify(data.user));
-      localStorage.setItem("usrtbrirtkn", data.token);
-      navigate("/");
-    } else {
-      toast.error(message);
+      if (!isLogin) {
+        forms.name = name;
+        path = "/register";
+      }
+
+      const body = JSON.stringify(forms);
+
+      return await API.post(path, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    {
+      onError: (err) => {
+        const message = err.response?.data?.message || err.message;
+
+        dispatch({
+          type: "USER_ERROR",
+          payload: { message },
+        });
+      },
+      onSuccess: (data) => {
+        const { user, token } = data?.data?.data;
+
+        dispatch({
+          type: "USER_SUCCESS_LOGIN",
+          payload: { user, token },
+        });
+      },
     }
-  };
+  );
 
-  const register = () => {};
-
-  const onSubmits = async (e) => {
-    e.preventDefault();
-
-    isLogin ? await login() : await register();
-  };
   return (
     <BootstrapForm onSubmit={onSubmits}>
       <Card>
@@ -56,7 +73,7 @@ const Index = ({ isLogin = false }) => {
             onChange={onChangeHandler}
             className={"mb-3"}
             name="name"
-            value={state.name}
+            value={form.name}
           />
         ) : (
           <></>
@@ -67,7 +84,7 @@ const Index = ({ isLogin = false }) => {
           onChange={onChangeHandler}
           className={"mb-3"}
           name="email"
-          value={state.email}
+          value={form.email}
         />
         <Form
           placeHolder="Your Password"
@@ -75,7 +92,7 @@ const Index = ({ isLogin = false }) => {
           onChange={onChangeHandler}
           className="mb-5"
           name="password"
-          value={state.password}
+          value={form.password}
         />
         <Button
           width="w-100"
