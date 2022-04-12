@@ -1,11 +1,16 @@
-import "./ChatBox.css";
-import PropType from "../../propTypes/ChatBox";
-import React from "react";
+import './ChatBox.css'
+import PropType from '../../propTypes/ChatBox'
+import React from 'react'
 
 const ChatBox = (props) => {
-  const { name, chat, onClick, profilePict } = props;
+  const { name, chat, onClick, profilePict, isActive = false } = props
   return (
-    <div className="d-flex align-items-center" onClick={onClick}>
+    <div
+      className={`d-flex align-items-center p-3  border-radius-3 ${
+        isActive ? 'bgIsActive' : ''
+      }`}
+      onClick={onClick}
+    >
       <img
         src={profilePict}
         alt={name}
@@ -18,9 +23,9 @@ const ChatBox = (props) => {
         <p className="chat">{chat}</p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-ChatBox.propTypes = PropType;
+ChatBox.propTypes = PropType
 
-export default ChatBox;
+export default ChatBox

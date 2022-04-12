@@ -5,7 +5,7 @@
 }
 
 .chatMessage {
-  background-color: #575757;
+  background-color: #434343;
   padding: 8px 13px;
   border-radius: 5px;
   color: white;
@@ -23,7 +23,7 @@
   height: 0;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
-  border-right: 15px solid #575757;
+  border-right: 15px solid #434343;
 }
 
 .triangleRight {

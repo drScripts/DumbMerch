@@ -1,32 +1,27 @@
 import styles from './Complain.module.css'
 import { ChatUserList, Navbar, ChatSection } from '../../containers'
-
 import { Container, Row } from 'react-bootstrap'
 import { io } from 'socket.io-client'
 import { useEffect, useState } from 'react'
 
 let socket
 
-const Complain = () => {
+const ComplainAdmin = () => {
   const [contact, setContact] = useState({})
   const [contacts, setContacts] = useState([])
 
-  const loadUserConnect = () => {
-    socket.emit('load admin contact')
+  const loadUserContact = () => {
+    socket.emit('load costumer contact')
 
-    socket.on('admin contact loaded', (data) => {
-      setContact(data)
-      setContacts([
-        {
-          user: data,
-          message: 'Click to see message',
-        },
-      ])
+    socket.on('user contact loaded', (data) => {
+      const userChats = data?.map((value, index) => ({
+        user: value,
+        message: 'Click here to see chat',
+      }))
+
+      setContacts(userChats)
+      setContact(userChats[0])
     })
-  }
-
-  const onContactClick = (contact) => {
-    setContact(contact)
   }
 
   useEffect(() => {
@@ -35,11 +30,20 @@ const Complain = () => {
         token: localStorage.getItem('usrtbrirtkn'),
       },
     })
-    loadUserConnect()
+    loadUserContact()
     return () => {
       socket.disconnect()
     }
   }, [])
+
+  const onUserClick = (contact) => {
+    setContact(contact)
+    socket.emit('load message', { idRecipient: contact?.user?.id })
+
+    socket.on('message loaded', (data) => {
+      console.log(data)
+    })
+  }
 
   return (
     <section>
@@ -47,15 +51,15 @@ const Complain = () => {
       <Container fluid className={`px-5 ${styles.fullpage} mt-4`}>
         <Row>
           <ChatUserList
-            contacts={contacts}
             contact={contact}
-            onClick={onContactClick}
+            contacts={contacts}
+            onClick={onUserClick}
           />
-          <ChatSection isAdmin={false} />
+          <ChatSection isAdmin={true} />
         </Row>
       </Container>
     </section>
   )
 }
 
-export default Complain
+export default ComplainAdmin

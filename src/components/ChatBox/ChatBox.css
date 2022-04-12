@@ -7,11 +7,19 @@
 }
 
 .chat {
-  color: #ababab;
+  color: #ffffff;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.bgIsActive {
+  background-color: #1c1c1c;
+}
+
+.border-radius-3 {
+  border-radius: 3px;
 }

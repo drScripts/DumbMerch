@@ -1,9 +1,9 @@
-import styles from "./ChatField.module.css";
-import React from "react";
-import PropType, { defaultVal } from "../../propTypes/ChatField";
+import styles from './ChatField.module.css'
+import React from 'react'
+import PropType, { defaultVal } from '../../propTypes/ChatField'
 
 const ChatField = (props) => {
-  const { isUser, message } = props;
+  const { isUser, message } = props
   if (isUser) {
     return (
       <div className="d-flex align-items-center justify-content-end gap-3 mb-3">
@@ -12,7 +12,7 @@ const ChatField = (props) => {
           <div className={styles.triangleRight}></div>
         </div>
       </div>
-    );
+    )
   } else {
     return (
       <div className="d-flex align-items-center gap-3 mb-3">
@@ -29,11 +29,11 @@ const ChatField = (props) => {
           <div className={styles.chatMessage}>{message}</div>
         </div>
       </div>
-    );
+    )
   }
-};
+}
 
-ChatField.propTypes = PropType;
-ChatField.defaultProps = defaultVal;
+ChatField.propTypes = PropType
+ChatField.defaultProps = defaultVal
 
-export default ChatField;
+export default ChatField
