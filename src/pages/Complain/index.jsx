@@ -10,12 +10,12 @@ let socket
 const Complain = () => {
   const [contact, setContact] = useState({})
   const [contacts, setContacts] = useState([])
+  const [messages, setMessages] = useState([])
 
   const loadUserConnect = () => {
     socket.emit('load admin contact')
 
     socket.on('admin contact loaded', (data) => {
-      setContact(data)
       setContacts([
         {
           user: data,
@@ -25,8 +25,35 @@ const Complain = () => {
     })
   }
 
+  const loadMessageWatcher = () => {
+    socket.on('message loaded', (data) => {
+      console.log(data)
+      if (data.length > 0) {
+        const dataMessage = data.map((item) => ({
+          idSender: item?.sender?.id,
+          message: item?.message,
+        }))
+
+        console.log('MESSAGE LOADED')
+        setMessages(dataMessage)
+      } else {
+        setMessages([])
+      }
+    })
+  }
+
   const onContactClick = (contact) => {
     setContact(contact)
+    socket.emit('load message', { idRecipient: contact?.user?.id })
+  }
+
+  const onMessageSend = (message) => {
+    const data = {
+      idRecipient: contact?.user?.id,
+      message,
+    }
+
+    socket.emit('send message', data)
   }
 
   useEffect(() => {
@@ -35,11 +62,19 @@ const Complain = () => {
         token: localStorage.getItem('usrtbrirtkn'),
       },
     })
+
+    socket.on('new message', () => {
+      socket.emit('load message', {
+        idRecipient: contact?.user?.id,
+      })
+    })
+
     loadUserConnect()
+    loadMessageWatcher()
     return () => {
       socket.disconnect()
     }
-  }, [])
+  }, [messages])
 
   return (
     <section>
@@ -51,7 +86,11 @@ const Complain = () => {
             contact={contact}
             onClick={onContactClick}
           />
-          <ChatSection isAdmin={false} />
+          <ChatSection
+            onMessageSend={onMessageSend}
+            messages={messages}
+            contact={contact}
+          />
         </Row>
       </Container>
     </section>

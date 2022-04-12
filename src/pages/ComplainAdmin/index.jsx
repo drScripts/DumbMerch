@@ -9,6 +9,7 @@ let socket
 const ComplainAdmin = () => {
   const [contact, setContact] = useState({})
   const [contacts, setContacts] = useState([])
+  const [messages, setMessages] = useState([])
 
   const loadUserContact = () => {
     socket.emit('load costumer contact')
@@ -24,25 +25,56 @@ const ComplainAdmin = () => {
     })
   }
 
+  const loadMessageWatcher = () => {
+    socket.on('message loaded', (data) => {
+      console.log('MESSAGE LOADED')
+      if (data.length > 0) {
+        const messageData = data.map((chat) => ({
+          idSender: chat?.sender?.id,
+          message: chat?.message,
+        }))
+
+        setMessages(messageData)
+      } else {
+        setMessages([])
+      }
+    })
+  }
+
+  const onNewMessage = () => {
+    socket.on('new message', (data) => {
+      console.log('NEWW MESSAGE')
+      socket.emit('load message', { idRecipient: contact?.user?.id })
+    })
+  }
+
+  const onMessageSend = (message) => {
+    const data = {
+      idRecipient: contact?.user?.id,
+      message,
+    }
+
+    socket.emit('send message', data)
+  }
+
   useEffect(() => {
+    console.log('init')
     socket = io('http://localhost:5000', {
       auth: {
         token: localStorage.getItem('usrtbrirtkn'),
       },
     })
     loadUserContact()
+    loadMessageWatcher()
+    onNewMessage()
     return () => {
       socket.disconnect()
     }
-  }, [])
+  }, [messages])
 
   const onUserClick = (contact) => {
     setContact(contact)
     socket.emit('load message', { idRecipient: contact?.user?.id })
-
-    socket.on('message loaded', (data) => {
-      console.log(data)
-    })
   }
 
   return (
@@ -55,7 +87,11 @@ const ComplainAdmin = () => {
             contacts={contacts}
             onClick={onUserClick}
           />
-          <ChatSection isAdmin={true} />
+          <ChatSection
+            contact={contact}
+            onMessageSend={onMessageSend}
+            messages={messages}
+          />
         </Row>
       </Container>
     </section>
