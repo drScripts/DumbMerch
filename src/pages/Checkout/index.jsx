@@ -8,7 +8,8 @@ import { API } from "../../services";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const DetailTransaction = () => {
+const Checkout = () => {
+  document.title = "DumbMerch | Checkout";
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
 
@@ -63,4 +64,4 @@ const DetailTransaction = () => {
   );
 };
 
-export default DetailTransaction;
+export default Checkout;

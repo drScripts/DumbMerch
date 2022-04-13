@@ -10,7 +10,8 @@ import { API } from "../../services";
 import { toast } from "react-toastify";
 
 const Profile = () => {
-  const [userState, dispatch] = useContext(UserContext);
+  document.title = "DumbMerch | Profile";
+  const [userState] = useContext(UserContext);
 
   const { data: transactions } = useQuery(
     "transactionsChace",

@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Container, Button, Form as BootstrapForm } from "react-bootstrap";
 import { Navbar } from "../../containers";
-import { Form } from "../../components";
+import { Form, LoadingCircle } from "../../components";
 import { toast } from "react-toastify";
 import { API } from "../../services";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 
-const Index = () => {
+const AddCategory = () => {
+  document.title = "DumbMerch Admin | Add Category";
   const [state, setState] = useState({
     name: "",
   });
@@ -20,7 +21,7 @@ const Index = () => {
     });
   };
 
-  const { mutate: onSubmitHandler } = useMutation(
+  const { mutate: onSubmitHandler, isLoading } = useMutation(
     async (e) => {
       e.preventDefault();
 
@@ -61,7 +62,13 @@ const Index = () => {
             className="mb-5"
             name={"name"}
           />
-          <Button type="submit" variant="success" className="w-100">
+          <Button
+            type="submit"
+            variant="success"
+            className="w-100"
+            disaled={isLoading}
+          >
+            <LoadingCircle isLoading={isLoading} />
             Save
           </Button>
         </BootstrapForm>
@@ -70,4 +77,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default AddCategory;

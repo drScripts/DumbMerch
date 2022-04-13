@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Container, Button, Form as BootstrapForm } from "react-bootstrap";
 import { Navbar } from "../../containers";
-import { Form, InputFile } from "../../components";
+import { Form, InputFile, LoadingCircle } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { API } from "../../services";
 import { toast } from "react-toastify";
@@ -50,10 +50,10 @@ const selectStyle = {
   singleValue: (styles) => ({ ...styles, color: "#fff" }),
 };
 
-const Index = () => {
+const EditProfile = () => {
+  document.title = "DumbMerch | Edit Profile";
   const navigate = useNavigate();
-  // eslint-disable-next-line no-unused-vars
-  const [userState, dispatch] = useContext(UserContext);
+  const [, dispatch] = useContext(UserContext);
   const [select, setSelect] = useState({
     value: "",
     label: "Select Your Gender",
@@ -123,7 +123,7 @@ const Index = () => {
     }
   );
 
-  const { mutate: onSubmitHandler } = useMutation(
+  const { mutate: onSubmitHandler, isLoading } = useMutation(
     async (e) => {
       e.preventDefault();
       const { phone_number, gender, address, file } = state;
@@ -151,7 +151,6 @@ const Index = () => {
     },
     {
       onSuccess: (data) => {
-        console.log(data);
         dispatch({
           type: "UPDATE_PROFILE",
           payload: { user: data },
@@ -210,7 +209,13 @@ const Index = () => {
             className="mb-5 text-light"
             value={select}
           />
-          <Button type="submit" variant="success" className="w-100 mb-3">
+          <Button
+            type="submit"
+            variant="success"
+            className="w-100 mb-3"
+            disabled={isLoading}
+          >
+            <LoadingCircle isLoading={isLoading} />
             Save
           </Button>
         </BootstrapForm>
@@ -219,4 +224,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default EditProfile;

@@ -5,7 +5,7 @@ import CurrencyFormat from "react-currency-format";
 import { useMutation } from "react-query";
 import { API } from "../../services";
 import { toast } from "react-toastify";
-const Index = ({
+const ProductTableItem = ({
   no = "#",
   fileName,
   fileLink,
@@ -123,4 +123,4 @@ const Index = ({
   );
 };
 
-export default Index;
+export default ProductTableItem;

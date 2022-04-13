@@ -1,12 +1,12 @@
-import React from 'react'
-import styles from './ChatUserList.module.css'
-import { ChatBox } from '../../components'
-import { Col } from 'react-bootstrap'
+import React from "react";
+import styles from "./ChatUserList.module.css";
+import { ChatBox } from "../../components";
+import { Col } from "react-bootstrap";
 
 const defaultImage =
-  'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+  "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
 
-const Index = ({ contacts = [], contact = {}, onClick }) => {
+const ChatUserList = ({ contacts = [], contact = {}, onClick }) => {
   return (
     <Col
       md={3}
@@ -14,18 +14,18 @@ const Index = ({ contacts = [], contact = {}, onClick }) => {
     >
       {contacts.map((item, index) => (
         <ChatBox
-          name={item?.user?.name || 'Admin'}
+          name={item?.user?.name || "Admin"}
           chat={item?.message}
           profilePict={item?.user?.profile?.profile_picture || defaultImage}
           isActive={contact?.user?.id === item?.user?.id}
           key={index}
           onClick={() => {
-            onClick(item)
+            onClick(item);
           }}
         />
       ))}
     </Col>
-  )
-}
+  );
+};
 
-export default Index
+export default ChatUserList;

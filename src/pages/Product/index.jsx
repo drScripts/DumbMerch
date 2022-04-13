@@ -2,7 +2,8 @@ import React from "react";
 import { Navbar, ProductTable } from "../../containers";
 import { Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-const Index = () => {
+const Product = () => {
+  document.title = "DumbMerch Admin | Product";
   return (
     <div>
       <Navbar />
@@ -19,4 +20,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Product;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Button, Form as BootstrapForm } from "react-bootstrap";
 import { Navbar } from "../../containers";
-import { Form, InputFile } from "../../components";
+import { Form, InputFile, LoadingCircle } from "../../components";
 import Select from "react-select";
 import { API } from "../../services";
 import { toast } from "react-toastify";
@@ -30,7 +30,8 @@ const selectStyle = {
   }),
 };
 
-const Index = () => {
+const AddProduct = () => {
+  document.title = "DumbMerch Admin | Add Product";
   const navigate = useNavigate();
   const [state, setState] = useState({
     name: "",
@@ -72,7 +73,7 @@ const Index = () => {
     });
   };
 
-  const { mutate: onSubmitHandler } = useMutation(
+  const { mutate: onSubmitHandler, isLoading } = useMutation(
     async (e) => {
       e.preventDefault();
 
@@ -165,7 +166,13 @@ const Index = () => {
             options={categories}
             onChange={onSelectHandler}
           />
-          <Button type="submit" variant="success" className="w-100 mb-3">
+          <Button
+            type="submit"
+            variant="success"
+            className="w-100 mb-3"
+            disabled={isLoading}
+          >
+            <LoadingCircle isLoading={isLoading} />
             Save
           </Button>
         </BootstrapForm>
@@ -174,4 +181,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default AddProduct;

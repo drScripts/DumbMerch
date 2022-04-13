@@ -1,13 +1,14 @@
 import { useEffect, useState, useCallback } from "react";
 import { Container, Button, Form as BootstrapForm } from "react-bootstrap";
 import { Navbar } from "../../containers";
-import { Form } from "../../components";
+import { Form, LoadingCircle } from "../../components";
 import { useParams, useNavigate } from "react-router-dom";
 import { API } from "../../services";
 import { toast } from "react-toastify";
 import { useMutation } from "react-query";
 
-const Index = () => {
+const EditCategory = () => {
+  document.title = "DumbMerch Admin | Edit Category";
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -34,7 +35,7 @@ const Index = () => {
     }
   }, [id]);
 
-  const { mutate: onSubmitHandler } = useMutation(
+  const { mutate: onSubmitHandler, isLoading } = useMutation(
     async (e) => {
       e.preventDefault();
       if (state.name) {
@@ -78,7 +79,13 @@ const Index = () => {
             className="mb-5"
             name={"name"}
           />
-          <Button type="submit" variant="success" className="w-100">
+          <Button
+            type="submit"
+            variant="success"
+            className="w-100"
+            disabled={isLoading}
+          >
+            <LoadingCircle isLoading={isLoading} />
             Save
           </Button>
         </BootstrapForm>
@@ -87,4 +94,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default EditCategory;

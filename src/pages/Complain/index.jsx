@@ -1,80 +1,80 @@
-import styles from './Complain.module.css'
-import { ChatUserList, Navbar, ChatSection } from '../../containers'
+import styles from "./Complain.module.css";
+import { ChatUserList, Navbar, ChatSection } from "../../containers";
 
-import { Container, Row } from 'react-bootstrap'
-import { io } from 'socket.io-client'
-import { useEffect, useState } from 'react'
+import { Container, Row } from "react-bootstrap";
+import { io } from "socket.io-client";
+import { useEffect, useState } from "react";
 
-let socket
+let socket;
 
 const Complain = () => {
-  const [contact, setContact] = useState({})
-  const [contacts, setContacts] = useState([])
-  const [messages, setMessages] = useState([])
+  document.title = "DumbMerch | Complain";
+
+  const [contact, setContact] = useState({});
+  const [contacts, setContacts] = useState([]);
+  const [messages, setMessages] = useState([]);
 
   const loadUserConnect = () => {
-    socket.emit('load admin contact')
+    socket.emit("load admin contact");
 
-    socket.on('admin contact loaded', (data) => {
+    socket.on("admin contact loaded", (data) => {
       setContacts([
         {
           user: data,
-          message: 'Click to see message',
+          message: "Click to see message",
         },
-      ])
-    })
-  }
+      ]);
+    });
+  };
 
   const loadMessageWatcher = () => {
-    socket.on('message loaded', (data) => {
-      console.log(data)
+    socket.on("message loaded", (data) => {
       if (data.length > 0) {
         const dataMessage = data.map((item) => ({
           idSender: item?.sender?.id,
           message: item?.message,
-        }))
+        }));
 
-        console.log('MESSAGE LOADED')
-        setMessages(dataMessage)
+        setMessages(dataMessage);
       } else {
-        setMessages([])
+        setMessages([]);
       }
-    })
-  }
+    });
+  };
 
   const onContactClick = (contact) => {
-    setContact(contact)
-    socket.emit('load message', { idRecipient: contact?.user?.id })
-  }
+    setContact(contact);
+    socket.emit("load message", { idRecipient: contact?.user?.id });
+  };
 
   const onMessageSend = (message) => {
     const data = {
       idRecipient: contact?.user?.id,
       message,
-    }
+    };
 
-    socket.emit('send message', data)
-  }
+    socket.emit("send message", data);
+  };
 
   useEffect(() => {
-    socket = io('http://localhost:5000', {
+    socket = io("http://localhost:5000", {
       auth: {
-        token: localStorage.getItem('usrtbrirtkn'),
+        token: localStorage.getItem("usrtbrirtkn"),
       },
-    })
+    });
 
-    socket.on('new message', () => {
-      socket.emit('load message', {
+    socket.on("new message", () => {
+      socket.emit("load message", {
         idRecipient: contact?.user?.id,
-      })
-    })
+      });
+    });
 
-    loadUserConnect()
-    loadMessageWatcher()
+    loadUserConnect();
+    loadMessageWatcher();
     return () => {
-      socket.disconnect()
-    }
-  }, [messages])
+      socket.disconnect();
+    };
+  }, [messages]);
 
   return (
     <section>
@@ -94,7 +94,7 @@ const Complain = () => {
         </Row>
       </Container>
     </section>
-  )
-}
+  );
+};
 
-export default Complain
+export default Complain;

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Container, Button, Form as BootstrapForm } from "react-bootstrap";
 import { Navbar } from "../../containers";
-import { Form, InputFile } from "../../components";
+import { Form, InputFile, LoadingCircle } from "../../components";
 import { useParams, useNavigate } from "react-router-dom";
 import { API } from "../../services";
 import Select from "react-select";
@@ -29,7 +29,8 @@ const selectStyle = {
     color: "black",
   }),
 };
-const Index = () => {
+const EditProduct = () => {
+  document.title = "DumbMerch Admin | Edit Product";
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -112,7 +113,7 @@ const Index = () => {
     }
   );
 
-  const { mutate: onSubmitHandler } = useMutation(
+  const { mutate: onSubmitHandler, isLoading } = useMutation(
     async (e) => {
       e.preventDefault();
       const { name, price, stock, description, categories, file } = state;
@@ -209,7 +210,13 @@ const Index = () => {
             onChange={onSelectHandler}
             value={state.defaultCategory}
           />
-          <Button type="submit" variant="success" className="w-100 mb-3">
+          <Button
+            type="submit"
+            variant="success"
+            className="w-100 mb-3"
+            disabled={isLoading}
+          >
+            <LoadingCircle isLoading={isLoading} />
             Save
           </Button>
         </BootstrapForm>
@@ -218,4 +225,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default EditProduct;

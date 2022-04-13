@@ -8,7 +8,7 @@ import { API } from "../../services";
 import { toast } from "react-toastify";
 import { UserContext } from "../../Context/UserContext";
 
-const Index = () => {
+const CartTable = () => {
   const [total, setTotal] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [userState, dispatch] = useContext(UserContext);
@@ -24,7 +24,6 @@ const Index = () => {
   const { data: carts, refetch } = useQuery(
     "cartChace",
     async () => {
-      console.log("get");
       const { data } = await API.get("carts");
       return data.data.carts;
     },
@@ -86,17 +85,25 @@ const Index = () => {
         </tr>
       </thead>
       <tbody>
-        {carts?.map((val, i) => (
-          <CartTableItem
-            no={i + 1}
-            id={val.id}
-            product={val.product}
-            qty={val.qty}
-            key={val.id}
-            onQtyChange={updateCarts}
-            onChange={onChange}
-          />
-        ))}
+        {carts?.length <= 0 ? (
+          <tr>
+            <td className="text-center" colSpan={7}>
+              No Data
+            </td>
+          </tr>
+        ) : (
+          carts?.map((val, i) => (
+            <CartTableItem
+              no={i + 1}
+              id={val.id}
+              product={val.product}
+              qty={val.qty}
+              key={val.id}
+              onQtyChange={updateCarts}
+              onChange={onChange}
+            />
+          ))
+        )}
       </tbody>
       <tfoot>
         <tr>
@@ -111,11 +118,21 @@ const Index = () => {
             />
           </th>
           <th>
-            <Link to="/checkout">
-              <Button variant="success" className="text-light">
+            {carts?.length <= 0 ? (
+              <Button
+                disabled={carts?.length <= 0}
+                variant="success"
+                className="text-light"
+              >
                 Checkout
               </Button>
-            </Link>
+            ) : (
+              <Link to="/checkout">
+                <Button variant="success" className="text-light">
+                  Checkout
+                </Button>
+              </Link>
+            )}
           </th>
         </tr>
       </tfoot>
@@ -123,4 +140,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default CartTable;

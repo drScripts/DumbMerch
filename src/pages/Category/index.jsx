@@ -4,7 +4,8 @@ import { CategoryTable, Navbar } from "../../containers";
 import { Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const Index = () => {
+const Category = () => {
+  document.title = "DumbMerch Admin | Category";
   return (
     <section>
       <Navbar />
@@ -21,4 +22,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Category;

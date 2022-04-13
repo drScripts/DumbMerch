@@ -3,7 +3,7 @@ import { Outlet, Navigate } from "react-router-dom";
 import { UserContext } from "../Context/UserContext";
 
 const Adminmiddleware = () => {
-  const [userState, dispatch] = useContext(UserContext);
+  const [userState] = useContext(UserContext);
 
   const { role = "" } = userState?.user;
 

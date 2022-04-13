@@ -13,6 +13,7 @@ import ChatBox from "./ChatBox";
 import CartTableItem from "./CartTableItem";
 import SingleTransactionItem from "./SingleTransactionItem";
 import SimpleSelect from "./SimpleSelect";
+import LoadingCircle from "./LoadingCircle";
 
 export {
   Button,
@@ -30,4 +31,5 @@ export {
   CartTableItem,
   SingleTransactionItem,
   SimpleSelect,
+  LoadingCircle,
 };

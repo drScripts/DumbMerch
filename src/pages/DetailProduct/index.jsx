@@ -11,8 +11,9 @@ import { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
 
 const DetailProduct = () => {
+  document.title = "DumbMerch | Product";
   const { id } = useParams();
-  const [userState, dispatch] = useContext(UserContext);
+  const [, dispatch] = useContext(UserContext);
 
   const { data: product } = useQuery(
     "productChace",
@@ -28,7 +29,7 @@ const DetailProduct = () => {
     }
   );
 
-  const { mutate: onSubmit } = useMutation(
+  const { mutate: onSubmit, isLoading } = useMutation(
     async () => {
       const dataBody = JSON.stringify({ product_id: id, quantity: 1 });
 
@@ -83,6 +84,8 @@ const DetailProduct = () => {
               width="w-100"
               bgColor="bg-red"
               onClick={onSubmit}
+              isLoading={isLoading}
+              isDisabled={product?.stock <= 0}
             />
           </Col>
         </Row>

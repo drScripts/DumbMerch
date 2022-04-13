@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import { useQuery } from "react-query";
 
 const HomePage = () => {
+  document.title = "DumbMerch ";
+
   const [params, setParams] = useState({});
   const [nextState, setNextState] = useState(null);
   const [temParams, setTemParams] = useState({});

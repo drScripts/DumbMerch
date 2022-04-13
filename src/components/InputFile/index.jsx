@@ -1,6 +1,6 @@
 import React from "react";
 
-const Index = ({ onChange, fileName }) => {
+const InputFile = ({ onChange, fileName }) => {
   const onFileChange = (e) => {
     onChange(e.target.files[0]);
   };
@@ -22,4 +22,4 @@ const Index = ({ onChange, fileName }) => {
   );
 };
 
-export default Index;
+export default InputFile;

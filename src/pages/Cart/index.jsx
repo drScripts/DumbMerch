@@ -3,6 +3,7 @@ import { CartTable, Navbar } from "../../containers";
 import { Container } from "react-bootstrap";
 
 const Index = () => {
+  document.title = "DumbMerch | Cart";
   return (
     <div>
       <Navbar />

@@ -4,8 +4,9 @@ import { Button, Card, Form } from "../../components";
 import { API } from "../../services";
 import { useMutation } from "react-query";
 import { UserContext } from "../../Context/UserContext";
+import { toast } from "react-toastify";
 
-const Index = ({ isLogin = false }) => {
+const AuthForm = ({ isLogin = false }) => {
   // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = useContext(UserContext);
 
@@ -22,7 +23,7 @@ const Index = ({ isLogin = false }) => {
     });
   };
 
-  const { mutate: onSubmits } = useMutation(
+  const { mutate: onSubmits, isLoading } = useMutation(
     async (e) => {
       e.preventDefault();
       const { email, password, name } = form;
@@ -34,13 +35,15 @@ const Index = ({ isLogin = false }) => {
         path = "/register";
       }
 
-      const body = JSON.stringify(forms);
+      if (email && password) {
+        const body = JSON.stringify(forms);
 
-      return await API.post(path, body, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+        return await API.post(path, body, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      }
     },
     {
       onError: (err) => {
@@ -52,12 +55,15 @@ const Index = ({ isLogin = false }) => {
         });
       },
       onSuccess: (data) => {
-        const { user, token } = data?.data?.data;
-
-        dispatch({
-          type: "USER_SUCCESS_LOGIN",
-          payload: { user, token },
-        });
+        if (data) {
+          const { user, token } = data?.data?.data;
+          dispatch({
+            type: "USER_SUCCESS_LOGIN",
+            payload: { user, token },
+          });
+        } else {
+          toast.error("Please insert all form!");
+        }
       },
     }
   );
@@ -99,10 +105,11 @@ const Index = ({ isLogin = false }) => {
           bgColor="bg-red"
           title={isLogin ? "Login" : "Register"}
           onClick={onChangeHandler}
+          isLoading={isLoading}
         />
       </Card>
     </BootstrapForm>
   );
 };
 
-export default Index;
+export default AuthForm;

@@ -4,7 +4,7 @@ import { API } from "../../services";
 import { toast } from "react-toastify";
 import { useQuery } from "react-query";
 
-const Index = () => {
+const CategoryTable = () => {
   const { data: categories, refetch } = useQuery(
     "categoriesChace",
     async () => {
@@ -46,4 +46,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default CategoryTable;

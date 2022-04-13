@@ -111,7 +111,7 @@ const FilterProducts = ({ onChange, onSearch }) => {
             </Dropdown.ItemText>
             <Dropdown.ItemText>
               <Form.Group className="mb-3" controlId="endPrice">
-                <Form.Label>End Price</Form.Label>
+                <Form.Label>Product Category</Form.Label>
                 <Form.Select
                   aria-label="Default select example"
                   className="bg-semi-dark-grey text-light"

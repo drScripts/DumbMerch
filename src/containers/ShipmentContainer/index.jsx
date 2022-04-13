@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useContext } from "react";
 import CurrencyFormat from "react-currency-format";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { SimpleSelect } from "../../components";
+import { SimpleSelect, LoadingCircle } from "../../components";
 import { API } from "../../services";
 import { toast } from "react-toastify";
 import { useMutation } from "react-query";
@@ -73,7 +73,6 @@ const ShipmentContainer = ({ total }) => {
           courier: shipment,
         },
       });
-      console.log(data);
       if (status === 200) {
         const mappedData = data?.data[0]?.costs?.map((costs, index) => {
           const type = costs?.service;
@@ -116,7 +115,7 @@ const ShipmentContainer = ({ total }) => {
     }
   };
 
-  const { mutate: onSubmit } = useMutation(
+  const { mutate: onSubmit, isLoading } = useMutation(
     async () => {
       if (cost !== 0) {
         const body = JSON.stringify({
@@ -242,7 +241,13 @@ const ShipmentContainer = ({ total }) => {
           displayType={"text"}
         />
       </h5>
-      <Button variant="success" className="w-100 mt-4 mb-3" onClick={onSubmit}>
+      <Button
+        disabled={cost === 0 || isLoading}
+        variant="success"
+        className="w-100 mt-4 mb-3"
+        onClick={onSubmit}
+      >
+        <LoadingCircle isLoading={isLoading} />
         Checkout
       </Button>
     </Col>

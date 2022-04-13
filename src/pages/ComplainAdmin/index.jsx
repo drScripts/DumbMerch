@@ -1,81 +1,79 @@
-import styles from './Complain.module.css'
-import { ChatUserList, Navbar, ChatSection } from '../../containers'
-import { Container, Row } from 'react-bootstrap'
-import { io } from 'socket.io-client'
-import { useEffect, useState } from 'react'
+import styles from "./Complain.module.css";
+import { ChatUserList, Navbar, ChatSection } from "../../containers";
+import { Container, Row } from "react-bootstrap";
+import { io } from "socket.io-client";
+import { useEffect, useState } from "react";
 
-let socket
+let socket;
 
 const ComplainAdmin = () => {
-  const [contact, setContact] = useState({})
-  const [contacts, setContacts] = useState([])
-  const [messages, setMessages] = useState([])
+  document.title = "DumbMerch Admin | Complain";
+  const [contact, setContact] = useState({});
+  const [contacts, setContacts] = useState([]);
+  const [messages, setMessages] = useState([]);
 
   const loadUserContact = () => {
-    socket.emit('load costumer contact')
+    socket.emit("load costumer contact");
 
-    socket.on('user contact loaded', (data) => {
+    socket.on("user contact loaded", (data) => {
       const userChats = data?.map((value, index) => ({
         user: value,
-        message: 'Click here to see chat',
-      }))
+        message: "Click here to see chat",
+      }));
 
-      setContacts(userChats)
-      setContact(userChats[0])
-    })
-  }
+      setContacts(userChats);
+    });
+  };
 
   const loadMessageWatcher = () => {
-    socket.on('message loaded', (data) => {
-      console.log('MESSAGE LOADED')
+    socket.on("message loaded", (data) => {
       if (data.length > 0) {
         const messageData = data.map((chat) => ({
           idSender: chat?.sender?.id,
           message: chat?.message,
-        }))
+        }));
 
-        setMessages(messageData)
+        setMessages(messageData);
       } else {
-        setMessages([])
+        setMessages([]);
       }
-    })
-  }
+    });
+  };
 
   const onNewMessage = () => {
-    socket.on('new message', (data) => {
-      console.log('NEWW MESSAGE')
-      socket.emit('load message', { idRecipient: contact?.user?.id })
-    })
-  }
+    socket.on("new message", (data) => {
+      socket.emit("load message", { idRecipient: contact?.user?.id });
+    });
+  };
 
   const onMessageSend = (message) => {
     const data = {
       idRecipient: contact?.user?.id,
       message,
-    }
+    };
 
-    socket.emit('send message', data)
-  }
+    socket.emit("send message", data);
+  };
 
   useEffect(() => {
-    console.log('init')
-    socket = io('http://localhost:5000', {
+    socket = io("http://localhost:5000", {
       auth: {
-        token: localStorage.getItem('usrtbrirtkn'),
+        token: localStorage.getItem("usrtbrirtkn"),
       },
-    })
-    loadUserContact()
-    loadMessageWatcher()
-    onNewMessage()
+    });
+    loadUserContact();
+    loadMessageWatcher();
+    onNewMessage();
     return () => {
-      socket.disconnect()
-    }
-  }, [messages])
+      socket.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
 
   const onUserClick = (contact) => {
-    setContact(contact)
-    socket.emit('load message', { idRecipient: contact?.user?.id })
-  }
+    setContact(contact);
+    socket.emit("load message", { idRecipient: contact?.user?.id });
+  };
 
   return (
     <section>
@@ -95,7 +93,7 @@ const ComplainAdmin = () => {
         </Row>
       </Container>
     </section>
-  )
-}
+  );
+};
 
-export default ComplainAdmin
+export default ComplainAdmin;

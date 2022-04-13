@@ -4,7 +4,7 @@ import { API } from "../../services";
 import { toast } from "react-toastify";
 import { useQuery } from "react-query";
 
-const Index = () => {
+const ProductTable = () => {
   const { data: products, refetch } = useQuery(
     "productChace",
     async () => {
@@ -57,4 +57,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default ProductTable;

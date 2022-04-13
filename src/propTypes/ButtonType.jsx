@@ -7,6 +7,8 @@ const type = {
   width: PropTypes.string,
   className: PropTypes.string,
   onClick: PropTypes.func,
+  isLoading: PropTypes.bool,
+  isDisabled: PropTypes.bool,
 };
 
 const defaultVal = {
@@ -14,6 +16,8 @@ const defaultVal = {
   fontColor: "c-white",
   width: "",
   className: "",
+  isLoading: false,
+  isDisabled: false,
 };
 
 export { type, defaultVal };

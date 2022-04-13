@@ -5,7 +5,7 @@ import { Row, Col } from "react-bootstrap";
 import CurrencyFormat from "react-currency-format";
 import { Link } from "react-router-dom";
 
-const Index = ({ transaction }) => {
+const TransactionItem = ({ transaction }) => {
   const generateProductImg = (products) => {
     let colWidth = products.length >= 2 ? 6 : 12;
 
@@ -109,4 +109,4 @@ const Index = ({ transaction }) => {
   );
 };
 
-export default Index;
+export default TransactionItem;
