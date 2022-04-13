@@ -6,6 +6,8 @@ import { AuthForm } from "../../containers";
 import { Link } from "react-router-dom";
 
 const Auth = ({ loginPage = true }) => {
+  document.title = `DumbMerch | ${loginPage ? "Login" : "Register"}`;
+
   return (
     <section className={`${styles.loginBody} pt-5 pb-4 pb-md-0`}>
       <div className="container">

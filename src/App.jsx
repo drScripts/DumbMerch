@@ -53,6 +53,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    console.clear();
     getProfile();
   }, []);
 

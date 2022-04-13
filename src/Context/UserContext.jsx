@@ -88,7 +88,7 @@ const UserProvider = ({ children }) => {
     if (state?.user?.role === "user") {
       getUserCart();
     }
-  }, [state.user]);
+  }, [state?.user]);
 
   return (
     <UserContext.Provider value={[state, dispatch]}>

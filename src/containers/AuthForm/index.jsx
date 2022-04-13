@@ -48,7 +48,6 @@ const AuthForm = ({ isLogin = false }) => {
     {
       onError: (err) => {
         const message = err.response?.data?.message || err.message;
-
         dispatch({
           type: "USER_ERROR",
           payload: { message },
@@ -104,7 +103,6 @@ const AuthForm = ({ isLogin = false }) => {
           width="w-100"
           bgColor="bg-red"
           title={isLogin ? "Login" : "Register"}
-          onClick={onChangeHandler}
           isLoading={isLoading}
         />
       </Card>
