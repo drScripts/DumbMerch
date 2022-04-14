@@ -75,9 +75,11 @@ const EditProfile = () => {
   };
 
   const onFileChange = (file) => {
+    const profile_picture = URL.createObjectURL(file);
     setState({
       ...state,
       file,
+      profile_picture,
     });
   };
 
@@ -168,10 +170,19 @@ const EditProfile = () => {
     <div>
       <Navbar />
       <Container className="mt-5">
-        <h1 className="text-light mb-5">Edit Product</h1>
+        <h1 className="text-light mb-5">Edit Profile</h1>
         <BootstrapForm onSubmit={onSubmitHandler}>
+          {state?.profile_picture && (
+            <img
+              className="previewImageCard mb-2"
+              src={state?.profile_picture}
+              alt="Profile Preview"
+            />
+          )}
           <InputFile
-            fileName={state.file.name || state.image_name}
+            fileName={
+              state.file.name || state?.profile_picture?.split("/")?.pop()
+            }
             onChange={onFileChange}
           />
           <Form

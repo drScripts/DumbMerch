@@ -30,11 +30,15 @@ if (localStorage.getItem("usrtbrirtkn")) {
 }
 
 const App = () => {
+  console.clear();
   const { pathname } = useLocation();
 
-  if (pathname.search("login") === -1 && pathname.search("register") === -1) {
+  if (
+    pathname.search("login") === -1 &&
+    pathname.search("register") === -1 &&
+    pathname.search("admin") === -1
+  ) {
     localStorage.setItem("routes", pathname);
-    console.log(pathname);
   }
 
   const [, dispatch] = useContext(UserContext);
@@ -62,6 +66,7 @@ const App = () => {
 
   useEffect(() => {
     getProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
