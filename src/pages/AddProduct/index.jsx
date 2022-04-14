@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Container, Button, Form as BootstrapForm } from "react-bootstrap";
 import { Navbar } from "../../containers";
 import { Form, InputFile, LoadingCircle } from "../../components";
@@ -7,6 +7,7 @@ import { API } from "../../services";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
+import style from "./AddProduct.module.css";
 
 const selectStyle = {
   control: (base, state) => ({
@@ -39,6 +40,7 @@ const AddProduct = () => {
     stock: "",
     description: "",
     file: {},
+    fileLink: "",
     categories: [],
   });
 
@@ -59,9 +61,12 @@ const AddProduct = () => {
   };
 
   const onFileChange = (file) => {
+    const fileLink = URL.createObjectURL(file);
+
     setState({
       ...state,
       file,
+      file_link: fileLink,
     });
   };
 
@@ -122,6 +127,13 @@ const AddProduct = () => {
       <Container className="mt-5">
         <h1 className="text-light mb-5">Add Product</h1>
         <BootstrapForm onSubmit={onSubmitHandler}>
+          {state?.file_link && (
+            <img
+              className={`${style.previewImageCard} mb-2`}
+              src={state?.file_link}
+              alt="Product Preview"
+            />
+          )}
           <InputFile fileName={state.file.name} onChange={onFileChange} />
 
           <Form

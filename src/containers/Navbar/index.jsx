@@ -62,7 +62,7 @@ const Navbar = () => {
               <Link to={"/profile"}>
                 <div
                   className={`nav-link ${
-                    currentPath === "/profile" ? "active" : ""
+                    currentPath.search("profile") !== -1 ? "active" : ""
                   }`}
                 >
                   Profile
@@ -74,7 +74,7 @@ const Navbar = () => {
                 <Link to={"/admin/category"}>
                   <div
                     className={`nav-link ${
-                      currentPath === "/admin/category" ? "active" : ""
+                      currentPath.search("category") !== -1 ? "active" : ""
                     }`}
                   >
                     Category
@@ -83,7 +83,7 @@ const Navbar = () => {
                 <Link to={"/admin/product"}>
                   <div
                     className={`nav-link ${
-                      currentPath === "/admin/product" ? "active" : ""
+                      currentPath.search("product") !== -1 ? "active" : ""
                     }`}
                   >
                     Product

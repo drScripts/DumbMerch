@@ -21,7 +21,10 @@ const Complain = () => {
       setContacts([
         {
           user: data,
-          message: "Click to see message",
+          message:
+            messages.length > 0
+              ? messages[messages.length - 1].message
+              : "Click here to see chat",
         },
       ]);
     });
@@ -74,6 +77,7 @@ const Complain = () => {
     return () => {
       socket.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   return (

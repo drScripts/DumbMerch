@@ -7,6 +7,7 @@ import { API } from "../../services";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import { useQuery, useMutation } from "react-query";
+import style from "./EditProduct.module.css";
 
 const selectStyle = {
   control: (base, state) => ({
@@ -41,6 +42,7 @@ const EditProduct = () => {
     description: "",
     file: {},
     image_name: "",
+    image_url: "",
     defaultCategory: [],
   });
 
@@ -52,9 +54,11 @@ const EditProduct = () => {
   };
 
   const onFileChange = (file) => {
+    const image_url = URL.createObjectURL(file);
     setState({
       ...state,
       file,
+      image_url,
     });
   };
 
@@ -162,6 +166,13 @@ const EditProduct = () => {
       <Container className="mt-5">
         <h1 className="text-light mb-5">Edit Product</h1>
         <BootstrapForm onSubmit={onSubmitHandler}>
+          {state?.image_url && (
+            <img
+              src={state?.image_url}
+              alt="Product Preview"
+              className={`${style.previewImageCard} m-2`}
+            />
+          )}
           <InputFile
             fileName={state.file.name || state.image_name}
             onChange={onFileChange}

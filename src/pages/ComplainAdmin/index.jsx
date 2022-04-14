@@ -18,7 +18,10 @@ const ComplainAdmin = () => {
     socket.on("user contact loaded", (data) => {
       const userChats = data?.map((value, index) => ({
         user: value,
-        message: "Click here to see chat",
+        message:
+          messages.length > 0
+            ? messages[messages.length - 1].message
+            : "Click here to see chat",
       }));
 
       setContacts(userChats);

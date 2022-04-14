@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClientProvider, QueryClient } from "react-query";
 import UserProvider from "./Context/UserContext";
+import { BrowserRouter } from "react-router-dom";
 // import reportWebVitals from './reportWebVitals';
 
 const client = new QueryClient();
@@ -16,7 +17,9 @@ ReactDOM.render(
   <React.StrictMode>
     <UserProvider>
       <QueryClientProvider client={client}>
-        <Router />
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
         <ToastContainer theme="dark" />
       </QueryClientProvider>
     </UserProvider>

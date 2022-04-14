@@ -70,7 +70,7 @@ const Profile = () => {
             <h1 className="text-orange mb-3">My Transactions</h1>
             <div className={`${styles.transactionFields}`}>
               (
-              {transactions.length <= 0 ? (
+              {transactions?.length <= 0 ? (
                 <h4 className="text-center text-light">No Data Transaction</h4>
               ) : (
                 transactions?.map((transaction, index) => (

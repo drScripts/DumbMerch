@@ -10,7 +10,7 @@ const ChatUserList = ({ contacts = [], contact = {}, onClick }) => {
   return (
     <Col
       md={3}
-      className={`${styles.personLists} ${styles.fullpage} d-flex flex-column gap-4 p-0`}
+      className={`${styles.personLists} ${styles.fullpage} d-flex flex-column gap-2 p-0`}
     >
       {contacts.map((item, index) => (
         <ChatBox
