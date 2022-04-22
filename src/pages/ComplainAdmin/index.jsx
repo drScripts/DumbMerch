@@ -59,7 +59,7 @@ const ComplainAdmin = () => {
   };
 
   useEffect(() => {
-    socket = io(proces.env.REACT_APP_SOCKET_URL, {
+    socket = io(process.env.REACT_APP_SOCKET_URL, {
       auth: {
         token: localStorage.getItem("usrtbrirtkn"),
       },
